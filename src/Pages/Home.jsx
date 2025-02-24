@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 // Memoized Components
 const StatusBadge = memo(() => (
   <div
-    className="inline-block animate-float lg:mx-[100px]"
+    className="inline-block animate-float lg:mx-0"
     data-aos="zoom-in"
     data-aos-delay="400"
   >
@@ -33,7 +33,7 @@ const StatusBadge = memo(() => (
 StatusBadge.displayName = "StatusBadge";
 
 const MainTitle = memo(() => (
-  <div className="space-y-2 ml-[100px]" data-aos="fade-up" data-aos-delay="600">
+  <div className="space-y-2" data-aos="fade-up" data-aos-delay="600">
     <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-6xl lg:text-6xl xl:text-7xl">
       <span className="relative inline-block">
         <span className="absolute -inset-2 bg-gradient-to-r from-[#6366f1] to-[#a855f7] blur-2xl opacity-20"></span>
@@ -228,7 +228,7 @@ const Home = () => {
 
                 {/* Description */}
                 <p
-                  className="max-w-xl text-base font-light leading-relaxed text-gray-400 md:text-lg ml-[100px]"
+                  className="max-w-xl text-base font-light leading-relaxed text-gray-400 md:text-lg"
                   data-aos="fade-up"
                   data-aos-delay="1000"
                 >
@@ -238,7 +238,7 @@ const Home = () => {
 
                 {/* Tech Stack */}
                 <div
-                  className="flex flex-wrap justify-start gap-3 ml-[100px]"
+                  className="flex flex-wrap justify-start gap-3"
                   data-aos="fade-up"
                   data-aos-delay="1200"
                 >
@@ -249,7 +249,7 @@ const Home = () => {
 
                 {/* CTA Buttons */}
                 <div
-                  className="flex flex-row justify-start w-full gap-3 ml-[100px]"
+                  className="flex flex-row justify-start w-full gap-3"
                   data-aos="fade-up"
                   data-aos-delay="1400"
                 >
@@ -263,7 +263,7 @@ const Home = () => {
 
                 {/* Social Links */}
                 <div
-                  className="justify-start hidden gap-4 sm:flex ml-[100px]"
+                  className="justify-start hidden gap-4 sm:flex"
                   data-aos="fade-up"
                   data-aos-delay="1600"
                 >
