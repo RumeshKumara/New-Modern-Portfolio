@@ -493,7 +493,7 @@ const SkillDetailsModal = ({ skill, isOpen, onClose }) => {
   );
 };
 
-// Enhanced SkillBar Component with click animations
+// Modern Card-based SkillBar Component
 const SkillBar = ({
   icon,
   name,
@@ -504,7 +504,7 @@ const SkillBar = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [animatedWidth, setAnimatedWidth] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const skillRef = useRef(null);
 
   useEffect(() => {
@@ -512,7 +512,6 @@ const SkillBar = ({
       ([entry]) => {
         if (entry.isIntersecting && !isVisible) {
           setIsVisible(true);
-          // Animate the skill bar width
           setTimeout(() => {
             setAnimatedWidth(proficiency);
           }, delay);
@@ -529,14 +528,6 @@ const SkillBar = ({
   }, [isVisible, proficiency, delay]);
 
   const handleClick = () => {
-    setIsClicked(true);
-
-    // Reset click animation after duration
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 200);
-
-    // Call the original onClick with all skill data
     onClick({
       icon,
       name,
@@ -555,10 +546,29 @@ const SkillBar = ({
   };
 
   const getProficiencyColor = (level) => {
-    if (level >= 90) return "from-green-500 to-emerald-500";
-    if (level >= 75) return "from-blue-500 to-cyan-500";
-    if (level >= 60) return "from-purple-500 to-violet-500";
-    return "from-orange-500 to-yellow-500";
+    if (level >= 90)
+      return {
+        bg: "from-emerald-500 to-teal-500",
+        text: "text-emerald-400",
+        border: "border-emerald-500/30",
+      };
+    if (level >= 75)
+      return {
+        bg: "from-blue-500 to-indigo-500",
+        text: "text-blue-400",
+        border: "border-blue-500/30",
+      };
+    if (level >= 60)
+      return {
+        bg: "from-purple-500 to-pink-500",
+        text: "text-purple-400",
+        border: "border-purple-500/30",
+      };
+    return {
+      bg: "from-orange-500 to-red-500",
+      text: "text-orange-400",
+      border: "border-orange-500/30",
+    };
   };
 
   const getProficiencyLabel = (level) => {
@@ -568,214 +578,223 @@ const SkillBar = ({
     return "Learning";
   };
 
-  const getProficiencyIcon = (level) => {
-    if (level >= 90) return <Flame className="w-3 h-3 text-green-400" />;
-    if (level >= 75) return <Zap className="w-3 h-3 text-blue-400" />;
-    if (level >= 60) return <Star className="w-3 h-3 text-purple-400" />;
-    return <Sparkles className="w-3 h-3 text-orange-400" />;
-  };
+  const colors = getProficiencyColor(proficiency);
 
   return (
     <div
       ref={skillRef}
       onClick={handleClick}
-      className={`p-4 transition-all duration-500 transform border cursor-pointer group bg-white/5 backdrop-blur-sm rounded-xl border-white/10 hover:bg-white/10 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/10 active:scale-95 ${
-        isClicked
-          ? "animate-pulse scale-110 bg-purple-500/20 border-purple-500/50"
-          : ""
-      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative p-6 transition-all duration-500 transform border cursor-pointer group bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-xl rounded-2xl border-white/10 hover:border-white/20 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 active:scale-95"
       data-aos="fade-up"
       data-aos-delay={delay}
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div
-          className={`relative flex-shrink-0 w-10 h-10 p-1 transition-all duration-300 rounded-lg bg-white/10 group-hover:bg-white/20 ${
-            isClicked ? "animate-bounce bg-purple-500/30" : ""
-          }`}
-        >
-          <img
-            src={`/TechStackIcon/${icon}`}
-            alt={name}
-            className={`object-contain w-full h-full transition-transform duration-300 group-hover:scale-110 ${
-              isClicked ? "scale-125 rotate-12" : ""
-            }`}
-          />
-          <div
-            className={`absolute transition-all duration-300 opacity-0 -top-1 -right-1 group-hover:opacity-100 ${
-              isClicked ? "opacity-100 animate-ping" : ""
-            }`}
-          >
-            {getProficiencyIcon(proficiency)}
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5 rounded-2xl">
+        <div className="absolute top-0 right-0 w-32 h-32 translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 -translate-x-12 translate-y-12 rounded-full bg-gradient-to-tr from-blue-500/20 to-purple-500/20"></div>
+      </div>
+
+      {/* Header Section */}
+      <div className="relative z-10 flex items-start justify-between mb-4">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="relative w-16 h-16 p-3 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10">
+              <img
+                src={`/TechStackIcon/${icon}`}
+                alt={name}
+                className="object-contain w-full h-full transition-transform duration-300 group-hover:scale-110"
+              />
+              {/* Floating badge */}
+              <div
+                className={`absolute -top-2 -right-2 w-6 h-6 ${colors.bg} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg`}
+              >
+                {proficiency}
+              </div>
+            </div>
           </div>
 
-          {/* Click ripple effect */}
-          {isClicked && (
-            <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/50 to-blue-500/50 animate-ping"></div>
-          )}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <h4
-            className={`text-sm font-medium text-white truncate transition-colors duration-300 group-hover:text-purple-300 ${
-              isClicked ? "text-purple-200" : ""
-            }`}
-          >
-            {name}
-          </h4>
-          <p className="flex items-center gap-1 text-xs text-slate-400">
-            <Layers className="w-3 h-3" />
-            {category}
-          </p>
-        </div>
-
-        <div className="flex flex-col items-end">
-          <div className="flex items-center gap-1">
-            {getProficiencyIcon(proficiency)}
-            <span
-              className={`text-xs font-medium text-purple-400 transition-colors duration-300 ${
-                isClicked ? "text-purple-200" : ""
-              }`}
-            >
-              {getProficiencyLabel(proficiency)}
-            </span>
+          <div>
+            <h4 className="mb-1 text-lg font-bold text-white transition-colors duration-300 group-hover:text-purple-300">
+              {name}
+            </h4>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 text-xs border rounded-full bg-white/10 text-slate-300 border-white/20">
+                {category}
+              </span>
+              <span
+                className={`px-2 py-1 text-xs rounded-full ${colors.text} bg-gradient-to-r ${colors.bg} bg-opacity-20 border ${colors.border}`}
+              >
+                {getProficiencyLabel(proficiency)}
+              </span>
+            </div>
           </div>
-          <span className="flex items-center gap-1 text-xs text-slate-500">
-            <Target className="w-3 h-3" />
+        </div>
+
+        {/* Quick stats */}
+        <div className="text-right">
+          <div className={`text-2xl font-bold ${colors.text} mb-1`}>
             {proficiency}%
-          </span>
+          </div>
+          <div className="text-xs text-slate-400">Proficiency</div>
         </div>
       </div>
 
-      {/* Enhanced Skill Bar with pulse effect */}
-      <div
-        className={`relative h-3 overflow-hidden transition-all duration-300 rounded-full bg-white/10 group-hover:bg-white/20 ${
-          isClicked ? "bg-white/30 shadow-lg shadow-purple-500/50" : ""
-        }`}
-      >
-        <div
-          className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProficiencyColor(
-            proficiency
-          )} rounded-full transition-all duration-1000 ease-out group-hover:shadow-lg ${
-            isClicked ? "animate-pulse shadow-2xl" : ""
-          }`}
-          style={{
-            width: `${animatedWidth}%`,
-            transition: "width 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
-          }}
-        >
-          {/* Enhanced Shimmer effect */}
-          <div
-            className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer ${
-              isClicked ? "via-white/60" : ""
-            }`}
-          ></div>
-
-          {/* Pulse effect on hover and click */}
-          <div
-            className={`absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 group-hover:opacity-100 animate-pulse ${
-              isClicked ? "opacity-100 via-white/40" : ""
-            }`}
-          ></div>
+      {/* Progress Section */}
+      <div className="relative z-10 mb-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm text-slate-300">Skill Level</span>
+          <span className="text-sm text-slate-400">{proficiency}%</span>
         </div>
 
-        {/* Enhanced Glow effect */}
+        {/* Enhanced Progress Bar */}
+        <div className="relative h-3 overflow-hidden rounded-full bg-white/10">
+          <div
+            className={`absolute top-0 left-0 h-full bg-gradient-to-r ${colors.bg} rounded-full transition-all duration-1000 ease-out`}
+            style={{
+              width: `${animatedWidth}%`,
+              transition: "width 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+          </div>
+
+          {/* Progress indicator dot */}
+          <div
+            className="absolute transition-all duration-1000 ease-out transform -translate-y-1/2 top-1/2"
+            style={{ left: `${animatedWidth}%` }}
+          >
+            <div
+              className={`w-4 h-4 bg-white rounded-full shadow-lg -translate-x-1/2 ${
+                isHovered ? "animate-pulse" : ""
+              }`}
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Interactive Elements */}
+      <div
+        className={`relative z-10 transition-all duration-300 ${
+          isHovered ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <Clock className="w-3 h-3" />
+            <span>Click for details</span>
+          </div>
+          <div className="flex items-center gap-1 text-xs text-purple-400">
+            <ArrowUpRight className="w-3 h-3" />
+            <span>View more</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Hover Effects */}
+      <div className="absolute inset-0 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 rounded-2xl">
         <div
-          className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getProficiencyColor(
-            proficiency
-          )} rounded-full opacity-30 blur-sm transition-all duration-1000 ease-out group-hover:opacity-60 ${
-            isClicked ? "opacity-80 blur-md" : ""
-          }`}
-          style={{
-            width: `${animatedWidth}%`,
-            transition: "width 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
-          }}
+          className={`absolute inset-0 bg-gradient-to-br ${colors.bg} opacity-5 rounded-2xl`}
         ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
+      </div>
 
-        {/* Progress indicator */}
-        <div
-          className={`absolute top-0 right-0 transition-all duration-300 transform translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 ${
-            isClicked ? "opacity-100 animate-bounce" : ""
-          }`}
-          style={{ left: `${animatedWidth}%` }}
-        >
-          <div
-            className={`w-2 h-2 bg-white rounded-full animate-ping ${
-              isClicked ? "w-3 h-3 bg-purple-300" : ""
-            }`}
-          ></div>
+      {/* Click Ripple Effect */}
+      <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 transition-transform duration-300 scale-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl group-active:scale-100 group-active:animate-ping"></div>
+      </div>
+    </div>
+  );
+};
+
+// Modern Category Section with enhanced visuals
+const CategorySection = ({ title, skills, icon: Icon, onSkillClick }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const displayedSkills = isExpanded ? skills : skills.slice(0, 6);
+
+  return (
+    <div className="mb-12" data-aos="fade-up">
+      {/* Enhanced Header */}
+      <div className="relative mb-8">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="relative">
+            <div className="p-3 transition-all duration-300 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm group-hover:from-purple-500/30 group-hover:to-blue-500/30">
+              <Icon className="w-8 h-8 text-purple-400" />
+            </div>
+            <div className="absolute w-4 h-4 rounded-full -top-1 -right-1 bg-gradient-to-br from-purple-500 to-blue-500 animate-pulse"></div>
+          </div>
+
+          <div className="flex-1">
+            <h3 className="mb-1 text-2xl font-bold text-white">{title}</h3>
+            <p className="text-sm text-slate-400">
+              {skills.length} technologies • Click to explore
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="px-3 py-1 border rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/30">
+              <span className="text-sm font-medium text-purple-300">
+                {skills.length} skills
+              </span>
+            </div>
+
+            {skills.length > 6 && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all duration-300 border rounded-lg bg-gradient-to-r from-white/5 to-white/10 border-white/10 hover:from-purple-500/10 hover:to-blue-500/10 hover:border-purple-500/30 hover:scale-105"
+              >
+                {isExpanded ? "Show Less" : "Show All"}
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform duration-300 ${
+                    isExpanded ? "rotate-90" : ""
+                  }`}
+                />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Decorative line */}
+        <div className="relative h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent">
+          <div className="absolute top-0 w-32 h-px transform -translate-x-1/2 left-1/2 bg-gradient-to-r from-purple-500 to-blue-500"></div>
         </div>
       </div>
 
-      {/* Skill level badges */}
-      <div
-        className={`flex justify-between mt-2 text-xs transition-all duration-300 opacity-0 group-hover:opacity-100 ${
-          isClicked ? "opacity-100" : ""
-        }`}
-      >
-        <span className="flex items-center gap-1 text-slate-500">
-          <Activity
-            className={`w-3 h-3 transition-transform duration-300 ${
-              isClicked ? "animate-spin" : ""
-            }`}
+      {/* Skills Grid */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {displayedSkills.map((skill, index) => (
+          <SkillBar
+            key={skill.name}
+            icon={skill.icon}
+            name={skill.name}
+            proficiency={skill.proficiency}
+            category={skill.category}
+            delay={index * 100}
+            onClick={onSkillClick}
           />
-          Progress
-        </span>
-        <span
-          className={`flex items-center gap-1 text-purple-400 transition-all duration-300 hover:text-purple-300 ${
-            isClicked ? "text-purple-200 animate-pulse" : ""
-          }`}
-        >
-          <ChevronRight
-            className={`w-3 h-3 transition-transform duration-300 ${
-              isClicked ? "translate-x-2 scale-125" : ""
-            }`}
-          />
-          View Details
-        </span>
+        ))}
       </div>
 
-      {/* Click wave effect */}
-      {isClicked && (
-        <div className="absolute inset-0 pointer-events-none rounded-xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 rounded-xl animate-ping"></div>
-          <div className="absolute rounded-lg inset-2 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 animate-pulse"></div>
+      {/* Expansion indicator */}
+      {skills.length > 6 && !isExpanded && (
+        <div className="mt-6 text-center">
+          <div className="inline-flex items-center gap-2 text-sm text-slate-400">
+            <span>+{skills.length - 6} more skills</span>
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-// Enhanced Category Section Component with more icons
-const CategorySection = ({ title, skills, icon: Icon, onSkillClick }) => (
-  <div className="mb-8" data-aos="fade-up">
-    <div className="flex items-center gap-3 mb-6 group">
-      <div className="p-2 transition-all duration-300 rounded-lg bg-white/10 group-hover:bg-purple-500/20">
-        <Icon className="w-6 h-6 text-purple-400 transition-colors duration-300 group-hover:text-purple-300" />
-      </div>
-      <h3 className="text-xl font-bold text-white transition-colors duration-300 group-hover:text-purple-300">
-        {title}
-      </h3>
-      <div className="flex-1 h-px bg-gradient-to-r from-purple-500/50 via-blue-500/30 to-transparent"></div>
-      <div className="flex items-center gap-2 text-sm text-slate-400">
-        <Package className="w-4 h-4" />
-        <span>{skills.length} skills</span>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {skills.map((skill, index) => (
-        <SkillBar
-          key={skill.name}
-          icon={skill.icon}
-          name={skill.name}
-          proficiency={skill.proficiency}
-          category={skill.category}
-          delay={index * 100}
-          onClick={onSkillClick}
-        />
-      ))}
-    </div>
-  </div>
-);
+CategorySection.propTypes = {
+  title: PropTypes.string.isRequired,
+  skills: PropTypes.array.isRequired,
+  icon: PropTypes.elementType.isRequired,
+  onSkillClick: PropTypes.func.isRequired,
+};
 
 // Enhanced tech stacks with additional details
 const techStacks = [
@@ -1342,151 +1361,206 @@ export default function FullWidthTabs() {
           {/* Tech Stack Tab */}
           <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="container pb-8 mx-auto overflow-hidden">
-              {/* Overview Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-8 md:grid-cols-4">
-                {[
-                  {
-                    label: "Frontend",
-                    count: techStacks.filter((t) => t.category === "Frontend")
-                      .length,
-                    icon: Monitor,
-                    emoji: "🎨",
-                    color: "blue",
-                  },
-                  {
-                    label: "Backend",
-                    count: techStacks.filter((t) => t.category === "Backend")
-                      .length,
-                    icon: Database,
-                    emoji: "⚙️",
-                    color: "green",
-                  },
-                  {
-                    label: "Tools",
-                    count: techStacks.filter((t) => t.category === "Build Tool")
-                      .length,
-                    icon: Wrench,
-                    emoji: "🔧",
-                    color: "orange",
-                  },
-                  {
-                    label: "Libraries",
-                    count: techStacks.filter((t) => t.category === "Library")
-                      .length,
-                    icon: BookOpen,
-                    emoji: "📚",
-                    color: "purple",
-                  },
-                ].map((stat, index) => (
-                  <div
-                    key={stat.label}
-                    className="relative p-4 overflow-hidden text-center transition-all duration-300 transform border cursor-pointer group bg-white/5 backdrop-blur-sm rounded-xl border-white/10 hover:bg-white/10 hover:scale-105"
-                    data-aos="zoom-in"
-                    data-aos-delay={index * 100}
-                  >
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-center mb-3">
-                        <div className="relative">
-                          <div className="mb-2 text-3xl transition-transform duration-300 group-hover:scale-110">
-                            {stat.emoji}
-                          </div>
-                          <div className="absolute transition-all duration-300 opacity-0 -top-1 -right-1 group-hover:opacity-100">
-                            <stat.icon
-                              className={`w-4 h-4 text-${stat.color}-400`}
-                            />
-                          </div>
-                        </div>
-                      </div>
+              {/* Enhanced Header Section */}
+              <div className="mb-10 text-center">
+                <h3 className="mb-4 text-3xl font-bold text-white">
+                  Technical{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                    Arsenal
+                  </span>
+                </h3>
+                <p className="max-w-2xl mx-auto mb-8 text-slate-400">
+                  A comprehensive overview of my technical skills and expertise
+                  across different domains
+                </p>
 
-                      <div className="mb-1 text-xl font-bold text-white transition-colors duration-300 group-hover:text-purple-100">
-                        {stat.count}
-                      </div>
-
-                      <div className="flex items-center justify-center gap-2">
-                        <stat.icon
-                          className={`w-4 h-4 text-${stat.color}-400 opacity-0 group-hover:opacity-100 transition-all duration-300`}
-                        />
-                        <div className="text-sm transition-colors duration-300 text-slate-400 group-hover:text-slate-300">
-                          {stat.label}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Animated background */}
+                {/* Skills Overview Cards */}
+                <div className="grid grid-cols-2 gap-4 mb-8 md:grid-cols-4">
+                  {[
+                    {
+                      label: "Frontend",
+                      count: techStacks.filter((t) => t.category === "Frontend")
+                        .length,
+                      icon: Monitor,
+                      gradient: "from-blue-500 to-cyan-500",
+                      bgPattern: "bg-blue-500/10",
+                      borderColor: "border-blue-500/30",
+                    },
+                    {
+                      label: "Backend",
+                      count: techStacks.filter((t) => t.category === "Backend")
+                        .length,
+                      icon: Database,
+                      gradient: "from-green-500 to-emerald-500",
+                      bgPattern: "bg-green-500/10",
+                      borderColor: "border-green-500/30",
+                    },
+                    {
+                      label: "Tools",
+                      count: techStacks.filter(
+                        (t) => t.category === "Build Tool"
+                      ).length,
+                      icon: Wrench,
+                      gradient: "from-orange-500 to-red-500",
+                      bgPattern: "bg-orange-500/10",
+                      borderColor: "border-orange-500/30",
+                    },
+                    {
+                      label: "Cloud & More",
+                      count: techStacks.filter((t) =>
+                        ["Deployment", "Library"].includes(t.category)
+                      ).length,
+                      icon: Cloud,
+                      gradient: "from-purple-500 to-pink-500",
+                      bgPattern: "bg-purple-500/10",
+                      borderColor: "border-purple-500/30",
+                    },
+                  ].map((stat, index) => (
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br from-${stat.color}-500/0 to-${stat.color}-600/0 group-hover:from-${stat.color}-500/10 group-hover:to-${stat.color}-600/5 transition-all duration-500 rounded-xl`}
-                    ></div>
-                  </div>
-                ))}
+                      key={stat.label}
+                      className={`relative p-6 overflow-hidden transition-all duration-500 transform border cursor-pointer group ${stat.bgPattern} backdrop-blur-sm rounded-2xl ${stat.borderColor} hover:scale-105 hover:shadow-xl`}
+                      data-aos="zoom-in"
+                      data-aos-delay={index * 100}
+                    >
+                      {/* Background decoration */}
+                      <div className="absolute top-0 right-0 w-20 h-20 transition-all duration-500 opacity-10 group-hover:opacity-20 group-hover:scale-110">
+                        <stat.icon className="w-full h-full" />
+                      </div>
+
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-4">
+                          <div
+                            className={`p-3 rounded-xl bg-gradient-to-r ${stat.gradient} bg-opacity-20`}
+                          >
+                            <stat.icon className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div
+                              className={`w-2 h-2 rounded-full bg-gradient-to-r ${stat.gradient} animate-pulse`}
+                            ></div>
+                            <div
+                              className={`w-1 h-1 rounded-full bg-gradient-to-r ${stat.gradient} animate-pulse`}
+                              style={{ animationDelay: "0.5s" }}
+                            ></div>
+                          </div>
+                        </div>
+
+                        <div className="text-center">
+                          <div className="mb-2 text-3xl font-bold text-white transition-colors duration-300 group-hover:text-purple-100">
+                            <StatCounter end={stat.count} />
+                          </div>
+                          <div className="text-sm transition-colors duration-300 text-slate-400 group-hover:text-slate-300">
+                            {stat.label}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hover glow effect */}
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-5 transition-all duration-500 rounded-2xl`}
+                      ></div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Enhanced Grouped Skills with category icons */}
-              <CategorySection
-                title="Frontend Technologies"
-                icon={Monitor}
-                skills={techStacks
-                  .filter((tech) => tech.category === "Frontend")
-                  .map((tech) => ({
-                    name: tech.language,
-                    icon: tech.icon,
-                    proficiency: tech.proficiency,
-                    category: tech.category,
-                    experience: tech.experience,
-                    projectsCount: tech.projectsCount,
-                    capabilities: tech.capabilities,
-                    learningPath: tech.learningPath,
-                    nextSteps: tech.nextSteps,
-                    resources: tech.resources,
-                    lastUpdated: tech.lastUpdated,
-                  }))}
-                onSkillClick={handleSkillClick}
-              />
+              {/* Enhanced Skills Sections */}
+              <div className="space-y-12">
+                <CategorySection
+                  title="Frontend Development"
+                  icon={Monitor}
+                  skills={techStacks
+                    .filter((tech) => tech.category === "Frontend")
+                    .map((tech) => ({
+                      name: tech.language,
+                      icon: tech.icon,
+                      proficiency: tech.proficiency,
+                      category: tech.category,
+                      experience: tech.experience,
+                      projectsCount: tech.projectsCount,
+                      capabilities: tech.capabilities,
+                      learningPath: tech.learningPath,
+                      nextSteps: tech.nextSteps,
+                      resources: tech.resources,
+                      lastUpdated: tech.lastUpdated,
+                    }))}
+                  onSkillClick={handleSkillClick}
+                />
 
-              <CategorySection
-                title="Backend & Database"
-                icon={Database}
-                skills={techStacks
-                  .filter((tech) => tech.category === "Backend")
-                  .map((tech) => ({
-                    name: tech.language,
-                    icon: tech.icon,
-                    proficiency: tech.proficiency,
-                    category: tech.category,
-                    experience: tech.experience,
-                    projectsCount: tech.projectsCount,
-                    capabilities: tech.capabilities,
-                    learningPath: tech.learningPath,
-                    nextSteps: tech.nextSteps,
-                    resources: tech.resources,
-                    lastUpdated: tech.lastUpdated,
-                  }))}
-                onSkillClick={handleSkillClick}
-              />
+                <CategorySection
+                  title="Backend & Infrastructure"
+                  icon={Database}
+                  skills={techStacks
+                    .filter((tech) => tech.category === "Backend")
+                    .map((tech) => ({
+                      name: tech.language,
+                      icon: tech.icon,
+                      proficiency: tech.proficiency,
+                      category: tech.category,
+                      experience: tech.experience,
+                      projectsCount: tech.projectsCount,
+                      capabilities: tech.capabilities,
+                      learningPath: tech.learningPath,
+                      nextSteps: tech.nextSteps,
+                      resources: tech.resources,
+                      lastUpdated: tech.lastUpdated,
+                    }))}
+                  onSkillClick={handleSkillClick}
+                />
 
-              <CategorySection
-                title="Tools & Libraries"
-                icon={Wrench}
-                skills={techStacks
-                  .filter((tech) =>
-                    ["Build Tool", "Deployment", "Library"].includes(
-                      tech.category
+                <CategorySection
+                  title="Development Tools & Platforms"
+                  icon={Wrench}
+                  skills={techStacks
+                    .filter((tech) =>
+                      ["Build Tool", "Deployment", "Library"].includes(
+                        tech.category
+                      )
                     )
-                  )
-                  .map((tech) => ({
-                    name: tech.language,
-                    icon: tech.icon,
-                    proficiency: tech.proficiency,
-                    category: tech.category,
-                    experience: tech.experience,
-                    projectsCount: tech.projectsCount,
-                    capabilities: tech.capabilities,
-                    learningPath: tech.learningPath,
-                    nextSteps: tech.nextSteps,
-                    resources: tech.resources,
-                    lastUpdated: tech.lastUpdated,
-                  }))}
-                onSkillClick={handleSkillClick}
-              />
+                    .map((tech) => ({
+                      name: tech.language,
+                      icon: tech.icon,
+                      proficiency: tech.proficiency,
+                      category: tech.category,
+                      experience: tech.experience,
+                      projectsCount: tech.projectsCount,
+                      capabilities: tech.capabilities,
+                      learningPath: tech.learningPath,
+                      nextSteps: tech.nextSteps,
+                      resources: tech.resources,
+                      lastUpdated: tech.lastUpdated,
+                    }))}
+                  onSkillClick={handleSkillClick}
+                />
+              </div>
+
+              {/* Skills Summary */}
+              <div className="p-6 mt-12 border rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-sm border-white/10">
+                <div className="text-center">
+                  <h4 className="mb-2 text-xl font-bold text-white">
+                    Continuous Learning Journey
+                  </h4>
+                  <p className="mb-4 text-slate-400">
+                    Always exploring new technologies and expanding my skill set
+                  </p>
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center gap-2 text-sm text-slate-300">
+                      <BookOpen className="w-4 h-4 text-blue-400" />
+                      <span>Learning</span>
+                    </div>
+                    <div className="w-1 h-1 rounded-full bg-slate-400"></div>
+                    <div className="flex items-center gap-2 text-sm text-slate-300">
+                      <Rocket className="w-4 h-4 text-purple-400" />
+                      <span>Building</span>
+                    </div>
+                    <div className="w-1 h-1 rounded-full bg-slate-400"></div>
+                    <div className="flex items-center gap-2 text-sm text-slate-300">
+                      <Trophy className="w-4 h-4 text-green-400" />
+                      <span>Mastering</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabPanel>
         </SwipeableViews>
@@ -1500,7 +1574,8 @@ export default function FullWidthTabs() {
       </Box>
 
       {/* Add CSS animations */}
-      <style jsx>{`
+      <style>
+        {`
         @keyframes shimmer {
           0% {
             transform: translateX(-100%);
@@ -1559,23 +1634,41 @@ export default function FullWidthTabs() {
           animation: modalSlideOut 0.3s ease-in;
         }
 
-        /* Enhanced click feedback */
-        .skill-clicked {
-          transform: scale(1.05);
-          box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
-          border-color: rgba(139, 92, 246, 0.6);
-          background: rgba(139, 92, 246, 0.1);
+        /* Enhanced skill card animations */
+        .skill-card-hover {
+          transform: translateY(-4px) scale(1.02);
+          box-shadow: 0 20px 40px -12px rgba(139, 92, 246, 0.3);
         }
 
-        /* Smooth transitions for all interactive elements */
-        .skill-bar-container {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .skill-progress-glow {
+          box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
 
-        .skill-bar-container:active {
-          transform: scale(0.98);
+        /* Floating animations */
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
         }
-      `}</style>
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        /* Pulse glow effect */
+        @keyframes pulse-glow {
+          0%, 100% { 
+            box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+          }
+          50% { 
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+          }
+        }
+
+        .animate-pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        `}
+      </style>
     </div>
   );
 }
