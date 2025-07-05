@@ -1,11 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { Share2, User, Mail, MessageSquare, Send } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  InputAdornment,
+  Divider,
+  CircularProgress,
+  Fade,
+  Grow,
+  Slide,
+} from "@mui/material";
+import { Person, Email, Message, Send, Share } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
 import SocialLinks from "../components/SocialLinks";
 import Komentar from "../components/Commentar";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
+// Styled components
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  background: "rgba(255, 255, 255, 0.05)",
+  backdropFilter: "blur(20px)",
+  borderRadius: "24px",
+  padding: theme.spacing(4),
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    boxShadow: "0 25px 50px -12px rgba(99, 102, 241, 0.1)",
+  },
+}));
+
+const StyledTextField = styled(TextField)(() => ({
+  "& .MuiOutlinedInput-root": {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: "12px",
+    "& fieldset": {
+      borderColor: "rgba(255, 255, 255, 0.2)",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(99, 102, 241, 0.3)",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#6366f1",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: "rgba(255, 255, 255, 0.7)",
+  },
+  "& .MuiInputBase-input": {
+    color: "white",
+    "&::placeholder": {
+      color: "rgba(255, 255, 255, 0.5)",
+    },
+  },
+}));
+
+const GradientButton = styled(Button)(({ theme }) => ({
+  background: "linear-gradient(45deg, #6366f1 30%, #a855f7 90%)",
+  borderRadius: "12px",
+  padding: theme.spacing(1.5, 4),
+  fontWeight: 600,
+  textTransform: "none",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    transform: "scale(1.02)",
+    boxShadow: "0 10px 25px rgba(99, 102, 241, 0.2)",
+  },
+  "&:active": {
+    transform: "scale(0.98)",
+  },
+  "&:disabled": {
+    opacity: 0.5,
+    cursor: "not-allowed",
+    "&:hover": {
+      transform: "none",
+    },
+  },
+}));
+
+const GradientTypography = styled(Typography)(() => ({
+  background: "linear-gradient(45deg, #6366f1 10%, #a855f7 93%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  fontWeight: 700,
+}));
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -34,44 +118,55 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     Swal.fire({
-      title: 'Sending Message...',
-      html: 'Please wait while we send your message',
+      title: "Sending Message...",
+      html: "Please wait while we send your message",
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     try {
-      // Get form data
+      // Create FormData from form
       const form = e.target;
-      const formData = new FormData(form);
+      const formDataObj = new FormData(form);
 
-      // Submit form
-      await form.submit();
+      // Submit to FormSubmit
+      const response = await fetch(
+        "https://formsubmit.co/ekizulfarrachman@gmail.com",
+        {
+          method: "POST",
+          body: formDataObj,
+        }
+      );
 
-      // Show success message
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your message has been sent successfully!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2000,
-        timerProgressBar: true
-      });
+      if (response.ok) {
+        // Show success message
+        Swal.fire({
+          title: "Success!",
+          text: "Your message has been sent successfully!",
+          icon: "success",
+          confirmButtonColor: "#6366f1",
+          timer: 2000,
+          timerProgressBar: true,
+        });
 
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        throw new Error("Failed to send message");
+      }
     } catch (error) {
+      console.error("Error sending message:", error);
       Swal.fire({
-        title: 'Error!',
-        text: 'Something went wrong. Please try again later.',
-        icon: 'error',
-        confirmButtonColor: '#6366f1'
+        title: "Error!",
+        text: "Something went wrong. Please try again later.",
+        icon: "error",
+        confirmButtonColor: "#6366f1",
       });
     } finally {
       setIsSubmitting(false);
@@ -79,140 +174,184 @@ const ContactPage = () => {
   };
 
   return (
-    <>
-      <div className="text-center lg:mt-[5%] mt-10 mb-2 sm:px-0 px-[5%]">
-        <h2
-          data-aos="fade-down"
-          data-aos-duration="1000"
-          className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
-        >
-          <span
-            style={{
-              color: "#6366f1",
-              backgroundImage:
-                "linear-gradient(45deg, #6366f1 10%, #a855f7 93%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Contact Me
-          </span>
-        </h2>
-        <p
-          data-aos="fade-up"
-          data-aos-duration="1100"
-          className="text-slate-400 max-w-2xl mx-auto text-sm md:text-base mt-2"
-        >
-          Got a question? Send me a message, and I'll get back to you soon.
-        </p>
-      </div>
-
-      <div
-        className="h-auto py-10 flex items-center justify-center px-[5%] md:px-0"
-        id="Contact"
-      >
-        <div className="container px-[1%] grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-[45%_55%] 2xl:grid-cols-[35%_65%] gap-12">
-          <div
-            data-aos="fade-right"
-            data-aos-duration="1200"
-            className="bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl p-5 py-10 sm:p-10 transform transition-all duration-300 hover:shadow-[#6366f1]/10"
-          >
-            <div className="flex justify-between items-start mb-8">
-              <div>
-                <h2 className="text-4xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
-                  Get in Touch
-                </h2>
-                <p className="text-gray-400">
-                  Have something to discuss? Send me a message and let's talk.
-                </p>
-              </div>
-              <Share2 className="w-10 h-10 text-[#6366f1] opacity-50" />
-            </div>
-
-            <form 
-              action="https://formsubmit.co/ekizulfarrachman@gmail.com"
-              method="POST"
-              onSubmit={handleSubmit}
-              className="space-y-6"
+    <Box sx={{ minHeight: "100vh", py: 4 }}>
+      <Container maxWidth="lg">
+        {/* Header Section */}
+        <Box textAlign="center" mb={6}>
+          <Fade in timeout={1000}>
+            <GradientTypography variant="h2" component="h1" gutterBottom>
+              Contact Me
+            </GradientTypography>
+          </Fade>
+          <Fade in timeout={1100}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "rgba(148, 163, 184, 1)",
+                maxWidth: "600px",
+                mx: "auto",
+                mt: 1,
+              }}
             >
-              {/* FormSubmit Configuration */}
-              <input type="hidden" name="_template" value="table" />
-              <input type="hidden" name="_captcha" value="false" />
+              Got a question? Send me a message, and I&apos;ll get back to you
+              soon.
+            </Typography>
+          </Fade>
+        </Box>
 
-              <div
-                data-aos="fade-up"
-                data-aos-delay="100"
-                className="relative group"
-              >
-                <User className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
-                  required
-                />
-              </div>
-              <div
-                data-aos="fade-up"
-                data-aos-delay="200"
-                className="relative group"
-              >
-                <Mail className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  disabled={isSubmitting}
-                  className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
-                  required
-                />
-              </div>
-              <div
-                data-aos="fade-up"
-                data-aos-delay="300"
-                className="relative group"
-              >
-                <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
-                <textarea
-                  name="message"
-                  placeholder="Your Message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  disabled={isSubmitting}
-                  className="w-full resize-none p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 h-[9.9rem] disabled:opacity-50"
-                  required
-                />
-              </div>
-              <button
-                data-aos="fade-up"
-                data-aos-delay="400"
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white py-4 rounded-xl font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-[#6366f1]/20 active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                <Send className="w-5 h-5" />
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </button>
-            </form>
+        {/* Main Content */}
+        <Grid container spacing={4}>
+          {/* Contact Form */}
+          <Grid item xs={12} lg={6}>
+            <Grow in timeout={1200}>
+              <StyledPaper elevation={0}>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                  mb={4}
+                >
+                  <Box>
+                    <GradientTypography
+                      variant="h4"
+                      component="h2"
+                      gutterBottom
+                    >
+                      Get in Touch
+                    </GradientTypography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "rgba(156, 163, 175, 1)" }}
+                    >
+                      Have something to discuss? Send me a message and
+                      let&apos;s talk.
+                    </Typography>
+                  </Box>
+                  <Share
+                    sx={{ color: "#6366f1", opacity: 0.5, fontSize: 40 }}
+                  />
+                </Box>
 
-            <div className="mt-10 pt-6 border-t border-white/10 flex justify-center space-x-6">
-              <SocialLinks />
-            </div>
-          </div>
+                <Box
+                  component="form"
+                  action="https://formsubmit.co/ekizulfarrachman@gmail.com"
+                  method="POST"
+                  onSubmit={handleSubmit}
+                  sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+                >
+                  {/* Hidden FormSubmit Configuration */}
+                  <input type="hidden" name="_template" value="table" />
+                  <input type="hidden" name="_captcha" value="false" />
 
-          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-3 py-3 md:p-10 md:py-8 shadow-2xl transform transition-all duration-300 hover:shadow-[#6366f1]/10">
-            <Komentar />
-          </div>
-        </div>
-      </div>
-    </>
+                  <Slide direction="up" in timeout={1000}>
+                    <StyledTextField
+                      fullWidth
+                      name="name"
+                      label="Your Name"
+                      variant="outlined"
+                      value={formData.name}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      required
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Person sx={{ color: "rgba(156, 163, 175, 1)" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Slide>
+
+                  <Slide direction="up" in timeout={1200}>
+                    <StyledTextField
+                      fullWidth
+                      name="email"
+                      label="Your Email"
+                      type="email"
+                      variant="outlined"
+                      value={formData.email}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      required
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Email sx={{ color: "rgba(156, 163, 175, 1)" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Slide>
+
+                  <Slide direction="up" in timeout={1400}>
+                    <StyledTextField
+                      fullWidth
+                      name="message"
+                      label="Your Message"
+                      variant="outlined"
+                      multiline
+                      rows={4}
+                      value={formData.message}
+                      onChange={handleChange}
+                      disabled={isSubmitting}
+                      required
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment
+                            position="start"
+                            sx={{ alignSelf: "flex-start", mt: 1 }}
+                          >
+                            <Message sx={{ color: "rgba(156, 163, 175, 1)" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Slide>
+
+                  <Slide direction="up" in timeout={1600}>
+                    <GradientButton
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      disabled={isSubmitting}
+                      startIcon={
+                        isSubmitting ? (
+                          <CircularProgress size={20} color="inherit" />
+                        ) : (
+                          <Send />
+                        )
+                      }
+                      sx={{ py: 2 }}
+                    >
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                    </GradientButton>
+                  </Slide>
+                </Box>
+
+                <Box mt={4} pt={3}>
+                  <Divider
+                    sx={{ borderColor: "rgba(255, 255, 255, 0.1)", mb: 3 }}
+                  />
+                  <Box display="flex" justifyContent="center">
+                    <SocialLinks />
+                  </Box>
+                </Box>
+              </StyledPaper>
+            </Grow>
+          </Grid>
+
+          {/* Comments Section */}
+          <Grid item xs={12} lg={6}>
+            <Grow in timeout={1400}>
+              <StyledPaper elevation={0} sx={{ height: "fit-content" }}>
+                <Komentar />
+              </StyledPaper>
+            </Grow>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
