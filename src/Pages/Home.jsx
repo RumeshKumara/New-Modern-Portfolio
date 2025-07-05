@@ -20,12 +20,6 @@ const StatusBadge = memo(() => (
   >
     <div className="relative group">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-      <div className="relative px-3 py-2 border rounded-full sm:px-4 bg-black/40 backdrop-blur-xl border-white/10">
-        <span className="bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-transparent bg-clip-text sm:text-sm text-[0.7rem] font-medium flex items-center">
-          <Sparkles className="w-3 h-3 mr-2 text-blue-400 sm:w-4 sm:h-4" />
-          Ready to Innovate
-        </span>
-      </div>
     </div>
   </div>
 ));
@@ -207,7 +201,7 @@ const Home = () => {
                   <span className="text-xl font-light text-transparent md:text-2xl bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text">
                     {text}
                   </span>
-                  <span className="w-[3px] h-6 bg-gradient-to-t from-[#6366f1] to-[#a855f7] ml-1 animate-blink"></span>
+                  <span className="w-[3px] h-6 bg-gradient-to-t from-[#6366f1] to-[#130f17] ml-1 animate-blink"></span>
                 </div>
 
                 {/* Description */}
@@ -260,13 +254,13 @@ const Home = () => {
 
             {/* Right Column - Video */}
             <div
-              className="w-full py-[10%] sm:py-0 lg:w-1/2 h-auto lg:h-screen xl:h-screen relative flex items-center justify-center order-2 lg:order-2 mt-8 lg:mt-0"
+              className="w-full py-[10%] sm:py-0 lg:w-1/2 h-auto lg:h-screen xl:h-screen relative flex items-center justify-center order-2 lg:order-2 mt-8 lg:mt-0 lg:absolute lg:right-0 lg:top-0"
               data-aos="fade-left"
               data-aos-delay="600"
             >
-              <div className="relative flex items-center justify-center w-full h-full">
+              <div className="relative flex items-center justify-center w-full h-full lg:pr-0">
                 <video
-                  className="object-cover w-[150%] h-full min-h-[400px] lg:min-h-[600px] xl:min-h-[750px] shadow-2xl rounded-2xl"
+                  className="object-cover w-full h-[100vh] lg:w-[60vw] rounded-2xl lg:rounded-r-none shadow-[0_0_80px_rgba(0,0,0,0.95),0_0_120px_rgba(0,0,0,0.85),0_0_200px_rgba(0,0,0,0.7),0_0_300px_rgba(0,0,0,0.5)]"
                   autoPlay
                   loop
                   muted
