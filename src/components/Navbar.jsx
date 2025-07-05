@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import profile from "../../public/newOne.jpg"; // Adjust the path as necessary
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,11 +89,14 @@ const Navbar = () => {
               className="flex items-center space-x-3 group"
             >
               <div className="relative">
-                <img
-                  src="/path-to-your-avatar.jpg" // Replace with your actual avatar path
-                  alt="Rumesh Avatar"
-                  className="w-10 h-10 rounded-full border-2 border-transparent bg-gradient-to-r from-[#a855f7] to-[#6366f1] p-0.5 transition-transform duration-300 group-hover:scale-110"
-                />
+                <div className="absolute inset-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#a855f7] via-[#6366f1] to-[#a855f7] animate-spin opacity-75"></div>
+                <div className="relative w-10 h-10 rounded-full bg-gradient-to-r from-[#a855f7] to-[#6366f1] p-0.5 z-10">
+                  <img
+                    src={profile}
+                    alt="Rumesh Avatar"
+                    className="object-cover w-full h-full transition-transform duration-300 rounded-full group-hover:scale-110"
+                  />
+                </div>
                 <div className="absolute inset-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#a855f7] to-[#6366f1] opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-[#a855f7] to-[#6366f1] bg-clip-text text-transparent">
