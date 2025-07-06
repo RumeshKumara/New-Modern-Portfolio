@@ -133,7 +133,7 @@ const ContactPage = () => {
 
       // Submit to FormSubmit
       const response = await fetch(
-        "https://formsubmit.co/ekizulfarrachman@gmail.com",
+        "https://formsubmit.co/rumeshk066@gmail.com",
         {
           method: "POST",
           body: formDataObj,
@@ -174,7 +174,7 @@ const ContactPage = () => {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", py: 4 }}>
+    <Box id="Contact" sx={{ minHeight: "100vh", py: 4, position: "relative" }}>
       <Container maxWidth="lg">
         {/* Header Section */}
         <Box textAlign="center" mb={6}>
@@ -234,7 +234,7 @@ const ContactPage = () => {
 
                 <Box
                   component="form"
-                  action="https://formsubmit.co/ekizulfarrachman@gmail.com"
+                  action="https://formsubmit.co/rumeshk066@gmail.com"
                   method="POST"
                   onSubmit={handleSubmit}
                   sx={{ display: "flex", flexDirection: "column", gap: 3 }}

@@ -35,7 +35,7 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
               <span className="block pb-4 text-sm text-center text-gray-500 dark:text-gray-400">
                 © 2025{" "}
                 <a href="https://flowbite.com/" className="hover:underline">
-                  EkiZR™
+                  RUMESH™
                 </a>
                 . All Rights Reserved.
               </span>

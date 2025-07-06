@@ -104,7 +104,7 @@ const Navbar = () => {
               </span>
             </a>
           </div>
-          y{/* Desktop Navigation */}
+          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="flex items-center ml-8 space-x-8">
               {navItems.map((item) => (
