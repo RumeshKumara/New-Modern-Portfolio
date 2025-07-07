@@ -1,5 +1,6 @@
 import { useEffect, memo, useMemo } from "react";
 import PropTypes from "prop-types";
+import profileOne from "../../public/profile.jpg";
 import {
   FileText,
   Code,
@@ -55,7 +56,7 @@ const ProfileImage = memo(() => (
           <div className="absolute inset-0 z-10 hidden transition-opacity duration-700 opacity-0 bg-gradient-to-t from-purple-500/20 via-transparent to-blue-500/20 group-hover:opacity-100 sm:block" />
 
           <img
-            src="/public/profile.jpg"
+            src={profileOne}
             alt="Profile"
             className="object-cover w-full h-full transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
             loading="lazy"
@@ -259,7 +260,8 @@ const AboutPage = () => {
 
             <div className="flex flex-col items-center w-full gap-4 lg:flex-row lg:items-start lg:gap-4 lg:px-0">
               <a
-                href="https://drive.google.com/drive/folders/1BOm51Grsabb3zj6Xk27K-iRwI1zITcpo"
+                href="/public/Rumesh_Kumara_CV.pdf"
+                download="Rumesh_Kumara_CV.pdf"
                 className="w-full lg:w-auto"
               >
                 <button className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl">
