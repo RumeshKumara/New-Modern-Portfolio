@@ -4,9 +4,6 @@ import { getDocs } from "firebase/firestore";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CardProject from "../components/CardProject";
@@ -58,6 +55,11 @@ import {
   SiGithub,
   // SiVisualstudio,
   SiNextdotjs,
+  // SiJava,
+  SiSpring,
+  SiDocker,
+  SiMysql,
+  SiLinux,
 } from "react-icons/si";
 import { FaExclamationTriangle } from "react-icons/fa";
 
@@ -249,13 +251,6 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
-  return {
-    id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
-  };
-}
 
 // Skill Details Modal Component
 const SkillDetailsModal = ({ skill, isOpen, onClose }) => {
@@ -549,40 +544,12 @@ const SkillBar = ({
     });
   };
 
-  const getProficiencyColor = (level) => {
-    if (level >= 90)
-      return {
-        bg: "from-emerald-500 to-teal-500",
-        text: "text-emerald-400",
-        border: "border-emerald-500/30",
-      };
-    if (level >= 75)
-      return {
-        bg: "from-blue-500 to-indigo-500",
-        text: "text-blue-400",
-        border: "border-blue-500/30",
-      };
-    if (level >= 60)
-      return {
-        bg: "from-purple-500 to-pink-500",
-        text: "text-purple-400",
-        border: "border-purple-500/30",
-      };
-    return {
-      bg: "from-orange-500 to-red-500",
-      text: "text-orange-400",
-      border: "border-orange-500/30",
-    };
-  };
-
   const getProficiencyLabel = (level) => {
     if (level >= 90) return "Expert";
     if (level >= 75) return "Advanced";
     if (level >= 60) return "Intermediate";
     return "Learning";
   };
-
-  const colors = getProficiencyColor(proficiency);
 
   return (
     <div
@@ -612,7 +579,8 @@ const SkillBar = ({
               })}
               {/* Floating badge */}
               <div
-                className={`absolute -top-2 -right-2 w-6 h-6 ${colors.bg} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg`}
+                className="absolute flex items-center justify-center w-6 h-6 text-xs font-bold text-white rounded-full shadow-lg -top-2 -right-2"
+                style={{ backgroundColor: getIconColor(name) }}
               >
                 {proficiency}
               </div>
@@ -628,7 +596,12 @@ const SkillBar = ({
                 {category}
               </span>
               <span
-                className={`px-2 py-1 text-xs rounded-full ${colors.text} bg-gradient-to-r ${colors.bg} bg-opacity-20 border ${colors.border}`}
+                className="px-2 py-1 text-xs text-white border rounded-full"
+                style={{
+                  backgroundColor: `${getIconColor(name)}20`,
+                  borderColor: `${getIconColor(name)}40`,
+                  color: getIconColor(name),
+                }}
               >
                 {getProficiencyLabel(proficiency)}
               </span>
@@ -638,7 +611,10 @@ const SkillBar = ({
 
         {/* Quick stats */}
         <div className="text-right">
-          <div className={`text-2xl font-bold ${colors.text} mb-1`}>
+          <div
+            className="mb-1 text-2xl font-bold"
+            style={{ color: getIconColor(name) }}
+          >
             {proficiency}%
           </div>
           <div className="text-xs text-slate-400">Proficiency</div>
@@ -655,9 +631,10 @@ const SkillBar = ({
         {/* Enhanced Progress Bar */}
         <div className="relative h-3 overflow-hidden rounded-full bg-white/10">
           <div
-            className={`absolute top-0 left-0 h-full bg-gradient-to-r ${colors.bg} rounded-full transition-all duration-1000 ease-out`}
+            className="absolute top-0 left-0 h-full transition-all duration-1000 ease-out rounded-full"
             style={{
               width: `${animatedWidth}%`,
+              backgroundColor: getIconColor(name),
               transition: "width 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
@@ -689,7 +666,10 @@ const SkillBar = ({
             <Clock className="w-3 h-3" />
             <span>Click for details</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-purple-400">
+          <div
+            className="flex items-center gap-1 text-xs"
+            style={{ color: getIconColor(name) }}
+          >
             <ArrowUpRight className="w-3 h-3" />
             <span>View more</span>
           </div>
@@ -699,7 +679,8 @@ const SkillBar = ({
       {/* Hover Effects */}
       <div className="absolute inset-0 transition-all duration-300 opacity-0 pointer-events-none group-hover:opacity-100 rounded-2xl">
         <div
-          className={`absolute inset-0 bg-gradient-to-br ${colors.bg} opacity-5 rounded-2xl`}
+          className="absolute inset-0 opacity-5 rounded-2xl"
+          style={{ backgroundColor: getIconColor(name) }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl"></div>
       </div>
@@ -820,6 +801,12 @@ const getIconColor = (language) => {
     "VS Code": "#007ACC",
     "Next.js": "#000000",
     SweetAlert2: "#FA8142",
+    Java: "#007396",
+    "Spring Boot": "#6DB33F",
+    "React Native": "#61DAFB",
+    Docker: "#2496ED",
+    MySQL: "#4479A1",
+    Linux: "#FCC624",
   };
   return colorMap[language] || "#ffffff";
 };
@@ -922,6 +909,28 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
+    icon: SiReact,
+    language: "React Native",
+    category: "Frontend",
+    proficiency: 75,
+    experience: "1+ years",
+    projectsCount: "3+",
+    capabilities: [
+      "Cross-Platform Mobile Development",
+      "Native Module Integration",
+      "Navigation",
+      "Performance Optimization",
+    ],
+    learningPath:
+      "Building mobile applications using React Native for iOS and Android platforms.",
+    nextSteps: "Exploring Expo and advanced native integrations",
+    resources: [
+      { name: "React Native Docs", url: "https://reactnative.dev" },
+      { name: "Expo Docs", url: "https://docs.expo.dev" },
+    ],
+    lastUpdated: "January 2025",
+  },
+  {
     icon: SiVite,
     language: "Vite",
     category: "Build Tool",
@@ -935,12 +944,42 @@ const techStacks = [
     proficiency: 70,
     categoryIcon: Database,
   },
+  // {
+  //   icon: SiJava,
+  //   language: "Java",
+  //   category: "Backend",
+  //   proficiency: 80,
+  //   experience: "2+ years",
+  //   projectsCount: "6+",
+  //   capabilities: [
+  //     "Object-Oriented Programming",
+  //     "Spring Framework",
+  //     "JPA/Hibernate",
+  //     "RESTful APIs",
+  //   ],
+  //   learningPath:
+  //     "Developed expertise through building enterprise applications and learning backend development patterns.",
+  //   nextSteps:
+  //     "Exploring microservices architecture and advanced Spring features",
+  //   lastUpdated: "January 2025",
+  // },
   {
-    icon: SiBootstrap,
-    language: "Bootstrap",
-    category: "Frontend",
-    proficiency: 85,
-    categoryIcon: Smartphone,
+    icon: SiSpring,
+    language: "Spring Boot",
+    category: "Backend",
+    proficiency: 78,
+    experience: "1+ years",
+    projectsCount: "4+",
+    capabilities: [
+      "Auto Configuration",
+      "Spring Security",
+      "Data JPA",
+      "Microservices",
+    ],
+    learningPath:
+      "Building scalable backend applications with Spring Boot framework and learning enterprise patterns.",
+    nextSteps: "Advanced Spring Cloud and containerization with Docker",
+    lastUpdated: "January 2025",
   },
   {
     icon: SiFirebase,
@@ -948,6 +987,67 @@ const techStacks = [
     category: "Backend",
     proficiency: 78,
     categoryIcon: Cloud,
+  },
+  {
+    icon: SiDocker,
+    language: "Docker",
+    category: "Backend",
+    proficiency: 72,
+    experience: "1+ years",
+    projectsCount: "4+",
+    capabilities: [
+      "Containerization",
+      "Docker Compose",
+      "Multi-stage Builds",
+      "Container Orchestration",
+    ],
+    learningPath:
+      "Learning containerization for development and deployment environments to ensure consistency across different platforms.",
+    nextSteps: "Exploring Kubernetes and advanced Docker networking",
+    lastUpdated: "January 2025",
+  },
+  {
+    icon: SiMysql,
+    language: "MySQL",
+    category: "Backend",
+    proficiency: 75,
+    experience: "2+ years",
+    projectsCount: "5+",
+    capabilities: [
+      "Database Design",
+      "Query Optimization",
+      "Indexing",
+      "Stored Procedures",
+    ],
+    learningPath:
+      "Gained experience through building data-driven applications and learning relational database management.",
+    nextSteps: "Advanced database administration and performance tuning",
+    lastUpdated: "January 2025",
+  },
+  {
+    icon: SiLinux,
+    language: "Linux",
+    category: "Backend",
+    proficiency: 78,
+    experience: "2+ years",
+    projectsCount: "8+",
+    capabilities: [
+      "System Administration",
+      "Command Line Interface",
+      "Server Management",
+      "Shell Scripting",
+    ],
+    learningPath:
+      "Developed expertise through server management, deployment processes, and development environment setup on Linux systems.",
+    nextSteps: "Advanced system administration and automation with Ansible",
+    lastUpdated: "January 2025",
+  },
+  {
+    icon: SiBootstrap,
+    language: "Bootstrap",
+    category: "Frontend",
+    proficiency: 85,
+    categoryIcon: Smartphone,
   },
   {
     icon: SiMui,
@@ -982,11 +1082,12 @@ const techStacks = [
       "Interface Design",
       "Generic Programming",
       "Advanced Types",
+      "Mobile Development",
     ],
     learningPath:
-      "Learning TypeScript to enhance JavaScript development with type safety.",
+      "Learning TypeScript to enhance JavaScript development with type safety for web and mobile applications.",
     nextSteps: "Mastering advanced TypeScript features and decorators",
-    lastUpdated: "December 2024",
+    lastUpdated: "January 2025",
   },
   {
     icon: SiGit,
@@ -1264,93 +1365,272 @@ export default function FullWidthTabs() {
       </div>
 
       <Box sx={{ width: "100%" }}>
-        {/* Enhanced AppBar with glassmorphism effect */}
-        <AppBar
-          position="static"
-          elevation={0}
-          sx={{
-            bgcolor: "transparent",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            borderRadius: "20px",
-            position: "relative",
-            overflow: "hidden",
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background:
-                "linear-gradient(180deg, rgba(139, 92, 246, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%)",
-              backdropFilter: "blur(20px)",
-              zIndex: 0,
-            },
-          }}
-          className="md:px-4"
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            variant="fullWidth"
-            sx={{
-              minHeight: "70px",
-              "& .MuiTab-root": {
-                fontSize: { xs: "0.9rem", md: "1rem" },
-                fontWeight: "600",
-                color: "#94a3b8",
-                textTransform: "none",
-                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                padding: "20px 0",
-                zIndex: 1,
-                margin: "8px",
-                borderRadius: "12px",
-                "&:hover": {
-                  color: "#ffffff",
-                  backgroundColor: "rgba(139, 92, 246, 0.1)",
-                  transform: "translateY(-2px)",
-                  "& .lucide": {
-                    transform: "scale(1.1) rotate(5deg)",
-                  },
-                },
-                "&.Mui-selected": {
-                  color: "#fff",
-                  background:
-                    "linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))",
-                  boxShadow: "0 4px 15px -3px rgba(139, 92, 246, 0.2)",
-                  "& .lucide": {
-                    color: "#a78bfa",
-                  },
-                },
-              },
-              "& .MuiTabs-indicator": {
-                height: 0,
-              },
-              "& .MuiTabs-flexContainer": {
-                gap: "8px",
-              },
-            }}
-          >
-            <Tab
-              icon={
-                <Code className="w-5 h-5 mb-2 transition-all duration-300" />
-              }
-              label="Projects"
-              {...a11yProps(0)}
-            />
-            <Tab
-              icon={
-                <Boxes className="w-5 h-5 mb-2 transition-all duration-300" />
-              }
-              label="Tech Stack"
-              {...a11yProps(1)}
-            />
-          </Tabs>
-        </AppBar>
+        {/* Floating Morphing Navigation */}
+        <div className="relative mb-12" data-aos="fade-up" data-aos-delay="300">
+          {/* Central Navigation Hub */}
+          <div className="flex justify-center mb-8">
+            <div className="relative">
+              {/* Main Navigation Container */}
+              <div className="relative px-2 py-2 border shadow-2xl bg-gradient-to-r from-slate-900/95 to-slate-800/95 border-slate-600/40 rounded-3xl backdrop-blur-2xl">
+                {/* Morphing Background Slider */}
+                <div
+                  className={`absolute top-2 bottom-2 w-1/2 transition-all duration-700 ease-out transform rounded-2xl ${
+                    value === 0
+                      ? "left-2 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 shadow-lg shadow-purple-500/30"
+                      : "left-1/2 ml-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 shadow-lg shadow-blue-500/30"
+                  }`}
+                >
+                  {/* Animated Border */}
+                  <div
+                    className={`absolute inset-0 rounded-2xl border-2 ${
+                      value === 0
+                        ? "border-purple-400/40"
+                        : "border-blue-400/40"
+                    } opacity-60`}
+                  ></div>
+
+                  {/* Glowing Orb */}
+                  {/* <div
+                    className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${
+                      value === 0
+                        ? "bg-gradient-to-r from-purple-400 to-indigo-400 shadow-lg shadow-purple-400/50"
+                        : "bg-gradient-to-r from-blue-400 to-cyan-400 shadow-lg shadow-blue-400/50"
+                    } animate-pulse`}
+                  ></div> */}
+                </div>
+
+                {/* Navigation Options */}
+                <div className="relative z-10 flex">
+                  {/* Projects Tab */}
+                  <button
+                    onClick={() => handleChange(null, 0)}
+                    className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
+                      value === 0
+                        ? "text-white"
+                        : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    {/* Icon Container */}
+                    <div className="relative">
+                      <div
+                        className={`p-3 rounded-xl transition-all duration-500 ${
+                          value === 0
+                            ? "bg-white/10 backdrop-blur-sm"
+                            : "bg-transparent group-hover:bg-white/5"
+                        }`}
+                      >
+                        <Code
+                          className={`w-6 h-6 transition-all duration-500 ${
+                            value === 0
+                              ? "text-purple-300 scale-110"
+                              : "text-slate-400 group-hover:text-purple-300 group-hover:scale-110"
+                          }`}
+                        />
+                      </div>
+
+                      {/* Active Indicator */}
+                      {value === 0 && (
+                        <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-purple-500 to-indigo-500">
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      )}
+
+                      {/* Hover Glow */}
+                      {/* {value !== 0 && (
+                        <div className="absolute inset-0 transition-opacity duration-300 opacity-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 group-hover:opacity-100 blur-lg"></div>
+                      )} */}
+                    </div>
+
+                    {/* Text Content */}
+                    <div className="flex flex-col items-start">
+                      <span
+                        className={`text-lg font-bold transition-colors duration-300 ${
+                          value === 0
+                            ? "text-white"
+                            : "text-slate-300 group-hover:text-white"
+                        }`}
+                      >
+                        Projects
+                      </span>
+                      <span
+                        className={`text-sm transition-colors duration-300 ${
+                          value === 0
+                            ? "text-purple-300"
+                            : "text-slate-500 group-hover:text-purple-300"
+                        }`}
+                      >
+                        {projects.length} works
+                      </span>
+                    </div>
+
+                    {/* Status Indicator */}
+                    <div className="absolute top-2 right-2">
+                      <div
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          value === 0
+                            ? "bg-purple-400 animate-pulse scale-125"
+                            : "bg-slate-600 group-hover:bg-purple-400"
+                        }`}
+                      ></div>
+                    </div>
+                  </button>
+
+                  {/* Tech Stack Tab */}
+                  <button
+                    onClick={() => handleChange(null, 1)}
+                    className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
+                      value === 1
+                        ? "text-white"
+                        : "text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    {/* Icon Container */}
+                    <div className="relative">
+                      <div
+                        className={`p-3 rounded-xl transition-all duration-500 ${
+                          value === 1
+                            ? "bg-white/10 backdrop-blur-sm"
+                            : "bg-transparent group-hover:bg-white/5"
+                        }`}
+                      >
+                        <Boxes
+                          className={`w-6 h-6 transition-all duration-500 ${
+                            value === 1
+                              ? "text-blue-300 scale-110"
+                              : "text-slate-400 group-hover:text-blue-300 group-hover:scale-110"
+                          }`}
+                        />
+                      </div>
+
+                      {/* Active Indicator */}
+                      {value === 1 && (
+                        <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-blue-500 to-cyan-500">
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                      )}
+
+                      {/* Hover Glow */}
+                      {value !== 1 && (
+                        <div className="absolute inset-0 transition-opacity duration-300 opacity-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 group-hover:opacity-100 blur-lg"></div>
+                      )}
+                    </div>
+
+                    {/* Text Content */}
+                    <div className="flex flex-col items-start">
+                      <span
+                        className={`text-lg font-bold transition-colors duration-300 ${
+                          value === 1
+                            ? "text-white"
+                            : "text-slate-300 group-hover:text-white"
+                        }`}
+                      >
+                        Tech Stack
+                      </span>
+                      <span
+                        className={`text-sm transition-colors duration-300 ${
+                          value === 1
+                            ? "text-blue-300"
+                            : "text-slate-500 group-hover:text-blue-300"
+                        }`}
+                      >
+                        {techStacks.length} skills
+                      </span>
+                    </div>
+
+                    {/* Status Indicator */}
+                    <div className="absolute top-2 right-2">
+                      <div
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          value === 1
+                            ? "bg-blue-400 animate-pulse scale-125"
+                            : "bg-slate-600 group-hover:bg-blue-400"
+                        }`}
+                      ></div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Floating Ambient Effects */}
+              <div className="absolute inset-0 -z-10">
+                {/* Outer Glow */}
+                <div
+                  className={`absolute inset-0 transition-all duration-700 blur-3xl opacity-20 ${
+                    value === 0
+                      ? "bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500"
+                      : "bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500"
+                  }`}
+                ></div>
+
+                {/* Rotating Elements */}
+                <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                  <div
+                    className={`w-32 h-32 transition-all duration-1000 ${
+                      value === 0 ? "rotate-0" : "rotate-180"
+                    }`}
+                  >
+                    <div
+                      className={`absolute top-0 left-0 w-3 h-3 rounded-full ${
+                        value === 0 ? "bg-purple-400" : "bg-blue-400"
+                      } animate-ping`}
+                    ></div>
+                    <div
+                      className={`absolute top-0 right-0 w-2 h-2 rounded-full ${
+                        value === 0 ? "bg-indigo-400" : "bg-cyan-400"
+                      } animate-pulse`}
+                    ></div>
+                    <div
+                      className={`absolute bottom-0 left-0 w-2 h-2 rounded-full ${
+                        value === 0 ? "bg-purple-300" : "bg-blue-300"
+                      } animate-bounce`}
+                    ></div>
+                    <div
+                      className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                        value === 0 ? "bg-indigo-300" : "bg-cyan-300"
+                      } animate-pulse`}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Active Section Description */}
+          <div className="text-center">
+            <div
+              className={`inline-flex items-center gap-3 px-6 py-3 mb-4 border shadow-xl rounded-2xl backdrop-blur-xl transition-all duration-500 ${
+                value === 0
+                  ? "bg-gradient-to-r from-purple-900/30 to-indigo-900/30 border-purple-500/30 text-purple-200"
+                  : "bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border-blue-500/30 text-blue-200"
+              }`}
+            >
+              <div
+                className={`w-3 h-3 rounded-full animate-spin ${
+                  value === 0
+                    ? "bg-gradient-to-r from-purple-400 to-indigo-400"
+                    : "bg-gradient-to-r from-blue-400 to-cyan-400"
+                }`}
+              ></div>
+              <span className="text-lg font-semibold">
+                {value === 0
+                  ? "Exploring Creative Projects"
+                  : "Discovering Technical Skills"}
+              </span>
+              <div
+                className={`w-3 h-3 rounded-full animate-pulse ${
+                  value === 0
+                    ? "bg-gradient-to-r from-indigo-400 to-purple-400"
+                    : "bg-gradient-to-r from-cyan-400 to-blue-400"
+                }`}
+              ></div>
+            </div>
+            <p className="max-w-md mx-auto leading-relaxed text-slate-400">
+              {value === 0
+                ? "Dive into my portfolio of creative applications and digital experiences"
+                : "Explore my technical expertise and the tools that power my development"}
+            </p>
+          </div>
+        </div>
 
         <SwipeableViews
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -1748,6 +2028,129 @@ export default function FullWidthTabs() {
 
         .animate-pulse-glow {
           animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Enhanced Tab Navigation Animations */
+        @keyframes cardPulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: scale(1.02);
+            opacity: 1;
+          }
+        }
+
+        @keyframes cardGlow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+          }
+          50% {
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+          }
+        }
+
+        @keyframes cardSlideIn {
+          0% {
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+
+        /* Card hover effects */
+        .card-hover-effect {
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover-effect:hover {
+          transform: translateY(-8px) scale(1.02);
+          filter: brightness(1.1);
+        }
+
+        /* Active card indicators */
+        .card-active-indicator {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card-active-indicator::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+          transition: left 0.8s ease;
+        }
+
+        .card-active-indicator.active::before {
+          left: 100%;
+          animation: cardShimmer 2s infinite;
+        }
+
+        @keyframes cardShimmer {
+          0% {
+            left: -100%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
+
+        /* Enhanced background animations */
+        .bg-pattern-animation {
+          background-size: 400% 400%;
+          animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        /* Progress indicator animations */
+        .progress-indicator {
+          position: relative;
+        }
+
+        .progress-indicator::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+          border-radius: inherit;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .progress-indicator.active::after {
+          opacity: 1;
+          animation: progressGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes progressGlow {
+          0%, 100% {
+            opacity: 0.1;
+          }
+          50% {
+            opacity: 0.3;
+          }
         }
         `}
       </style>
