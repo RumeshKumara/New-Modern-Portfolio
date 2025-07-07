@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { db, collection } from "../firebase";
 import { getDocs } from "firebase/firestore";
 import PropTypes from "prop-types";
@@ -10,52 +10,56 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import CardProject from "../components/CardProject";
-import TechStackIcon from "../components/TechStackIcon";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Certificate from "../components/Certificate";
 import {
   Code,
-  Award,
   Boxes,
   Search,
   Filter,
   TrendingUp,
-  Users,
   Star,
-  Zap,
   Globe,
   Database,
-  Palette,
   Wrench,
   BookOpen,
   Trophy,
-  Target,
   Rocket,
   Monitor,
   Smartphone,
   Cloud,
   Shield,
-  GitBranch,
   Package,
   Layers,
-  Activity,
   ChevronRight,
   ExternalLink,
-  Download,
-  Eye,
-  Heart,
-  ThumbsUp,
-  Sparkles,
-  Flame,
   X,
-  Calendar,
   BarChart3,
   CheckCircle,
   Clock,
   Lightbulb,
   ArrowUpRight,
 } from "lucide-react";
+// React Icons imports for tech stack
+import {
+  SiHtml5,
+  SiCss3,
+  SiJavascript,
+  SiTailwindcss,
+  SiReact,
+  SiVite,
+  SiNodedotjs,
+  SiBootstrap,
+  SiFirebase,
+  SiMui,
+  SiVercel,
+  SiTypescript,
+  SiGit,
+  SiGithub,
+  // SiVisualstudio,
+  SiNextdotjs,
+} from "react-icons/si";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 // Loading Skeleton Component
 const SkeletonCard = () => (
@@ -318,11 +322,11 @@ const SkillDetailsModal = ({ skill, isOpen, onClose }) => {
         <div className="sticky top-0 flex items-center justify-between p-6 border-b bg-slate-900/95 backdrop-blur-xl border-white/10">
           <div className="flex items-center gap-4">
             <div className="relative w-12 h-12 p-2 transition-all duration-500 transform rounded-lg bg-white/10 animate-pulse">
-              <img
-                src={`/TechStackIcon/${skill.icon}`}
-                alt={skill.name}
-                className="object-contain w-full h-full transition-transform duration-500 hover:scale-110"
-              />
+              {React.createElement(skill.icon, {
+                className:
+                  "w-full h-full transition-transform duration-500 hover:scale-110",
+                style: { color: getIconColor(skill.name) },
+              })}
               <div className="absolute inset-0 transition-opacity duration-500 rounded-lg opacity-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 hover:opacity-100"></div>
             </div>
             <div>
@@ -601,11 +605,11 @@ const SkillBar = ({
         <div className="flex items-center gap-4">
           <div className="relative">
             <div className="relative w-16 h-16 p-3 transition-all duration-300 rounded-xl bg-gradient-to-br from-white/10 to-white/5 group-hover:from-white/20 group-hover:to-white/10">
-              <img
-                src={`/TechStackIcon/${icon}`}
-                alt={name}
-                className="object-contain w-full h-full transition-transform duration-300 group-hover:scale-110"
-              />
+              {React.createElement(icon, {
+                className:
+                  "w-full h-full transition-transform duration-300 group-hover:scale-110",
+                style: { color: getIconColor(name) },
+              })}
               {/* Floating badge */}
               <div
                 className={`absolute -top-2 -right-2 w-6 h-6 ${colors.bg} rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg`}
@@ -796,10 +800,34 @@ CategorySection.propTypes = {
   onSkillClick: PropTypes.func.isRequired,
 };
 
-// Enhanced tech stacks with additional details
+// Icon color mapping for tech stack icons
+const getIconColor = (language) => {
+  const colorMap = {
+    HTML: "#E34F26",
+    CSS: "#1572B6",
+    JavaScript: "#F7DF1E",
+    "Tailwind CSS": "#06B6D4",
+    ReactJS: "#61DAFB",
+    Vite: "#646CFF",
+    "Node JS": "#339933",
+    Bootstrap: "#7952B3",
+    Firebase: "#FFCA28",
+    "Material UI": "#007FFF",
+    Vercel: "#000000",
+    TypeScript: "#3178C6",
+    Git: "#F05032",
+    GitHub: "#181717",
+    "VS Code": "#007ACC",
+    "Next.js": "#000000",
+    SweetAlert2: "#FA8142",
+  };
+  return colorMap[language] || "#ffffff";
+};
+
+// Enhanced tech stacks with React Icons instead of SVG files
 const techStacks = [
   {
-    icon: "html.svg",
+    icon: SiHtml5,
     language: "HTML",
     category: "Frontend",
     proficiency: 95,
@@ -817,7 +845,7 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
-    icon: "css.svg",
+    icon: SiCss3,
     language: "CSS",
     category: "Frontend",
     proficiency: 90,
@@ -835,7 +863,7 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
-    icon: "javascript.svg",
+    icon: SiJavascript,
     language: "JavaScript",
     category: "Frontend",
     proficiency: 85,
@@ -853,7 +881,7 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
-    icon: "tailwind.svg",
+    icon: SiTailwindcss,
     language: "Tailwind CSS",
     category: "Frontend",
     proficiency: 88,
@@ -871,7 +899,7 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
-    icon: "reactjs.svg",
+    icon: SiReact,
     language: "ReactJS",
     category: "Frontend",
     proficiency: 82,
@@ -894,53 +922,140 @@ const techStacks = [
     lastUpdated: "December 2024",
   },
   {
-    icon: "vite.svg",
+    icon: SiVite,
     language: "Vite",
     category: "Build Tool",
     proficiency: 75,
     categoryIcon: Rocket,
   },
   {
-    icon: "nodejs.svg",
+    icon: SiNodedotjs,
     language: "Node JS",
     category: "Backend",
     proficiency: 70,
     categoryIcon: Database,
   },
   {
-    icon: "bootstrap.svg",
+    icon: SiBootstrap,
     language: "Bootstrap",
     category: "Frontend",
     proficiency: 85,
     categoryIcon: Smartphone,
   },
   {
-    icon: "firebase.svg",
+    icon: SiFirebase,
     language: "Firebase",
     category: "Backend",
     proficiency: 78,
     categoryIcon: Cloud,
   },
   {
-    icon: "MUI.svg",
+    icon: SiMui,
     language: "Material UI",
     category: "Frontend",
     proficiency: 80,
     categoryIcon: Layers,
   },
   {
-    icon: "vercel.svg",
+    icon: SiVercel,
     language: "Vercel",
     category: "Deployment",
     proficiency: 85,
     categoryIcon: Globe,
   },
   {
-    icon: "SweetAlert.svg",
+    icon: FaExclamationTriangle,
     language: "SweetAlert2",
     category: "Library",
     proficiency: 90,
     categoryIcon: Shield,
+  },
+  {
+    icon: SiTypescript,
+    language: "TypeScript",
+    category: "Frontend",
+    proficiency: 75,
+    experience: "1+ years",
+    projectsCount: "5+",
+    capabilities: [
+      "Type Safety",
+      "Interface Design",
+      "Generic Programming",
+      "Advanced Types",
+    ],
+    learningPath:
+      "Learning TypeScript to enhance JavaScript development with type safety.",
+    nextSteps: "Mastering advanced TypeScript features and decorators",
+    lastUpdated: "December 2024",
+  },
+  {
+    icon: SiGit,
+    language: "Git",
+    category: "Version Control",
+    proficiency: 85,
+    experience: "2+ years",
+    projectsCount: "All projects",
+    capabilities: [
+      "Branch Management",
+      "Merge Conflicts Resolution",
+      "Remote Repositories",
+      "Git Workflow",
+    ],
+    learningPath: "Version control essential for all development projects.",
+    nextSteps: "Advanced Git workflows and CI/CD integration",
+    lastUpdated: "December 2024",
+  },
+  {
+    icon: SiGithub,
+    language: "GitHub",
+    category: "Platform",
+    proficiency: 80,
+    experience: "2+ years",
+    projectsCount: "All projects",
+    capabilities: [
+      "Repository Management",
+      "Pull Requests",
+      "Issues & Projects",
+      "GitHub Actions",
+    ],
+    learningPath: "Code hosting and collaboration platform for all projects.",
+    nextSteps: "Advanced GitHub Actions and workflow automation",
+    lastUpdated: "December 2024",
+  },
+  // {
+  //   icon: SiVisualstudio,
+  //   language: "VS Code",
+  //   category: "Development Tool",
+  //   proficiency: 90,
+  //   experience: "3+ years",
+  //   projectsCount: "All projects",
+  //   capabilities: [
+  //     "Extension Management",
+  //     "Debugging",
+  //     "IntelliSense",
+  //     "Integrated Terminal",
+  //   ],
+  //   learningPath: "Primary development environment for all coding projects.",
+  //   nextSteps: "Custom extension development and advanced configurations",
+  //   lastUpdated: "December 2024",
+  // },
+  {
+    icon: SiNextdotjs,
+    language: "Next.js",
+    category: "Frontend",
+    proficiency: 70,
+    experience: "1+ years",
+    projectsCount: "3+",
+    capabilities: [
+      "Server-Side Rendering",
+      "Static Site Generation",
+      "API Routes",
+      "App Router",
+    ],
+    learningPath:
+      "Building full-stack React applications with enhanced performance.",
+    nextSteps: "Advanced Next.js features and deployment optimization",
+    lastUpdated: "December 2024",
   },
 ];
 
@@ -948,9 +1063,7 @@ export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [projects, setProjects] = useState([]);
-  const [certificates, setCertificates] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -987,12 +1100,8 @@ export default function FullWidthTabs() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const projectCollection = collection(db, "projects");
-      const certificateCollection = collection(db, "certificates");
 
-      const [projectSnapshot, certificateSnapshot] = await Promise.all([
-        getDocs(projectCollection),
-        getDocs(certificateCollection),
-      ]);
+      const projectSnapshot = await getDocs(projectCollection);
 
       const projectData = projectSnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -1000,13 +1109,9 @@ export default function FullWidthTabs() {
         TechStack: doc.data().TechStack || [],
       }));
 
-      const certificateData = certificateSnapshot.docs.map((doc) => doc.data());
-
       setProjects(projectData);
-      setCertificates(certificateData);
 
       localStorage.setItem("projects", JSON.stringify(projectData));
-      localStorage.setItem("certificates", JSON.stringify(certificateData));
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -1025,8 +1130,6 @@ export default function FullWidthTabs() {
   const toggleShowMore = useCallback((type) => {
     if (type === "projects") {
       setShowAllProjects((prev) => !prev);
-    } else {
-      setShowAllCertificates((prev) => !prev);
     }
   }, []);
 
@@ -1046,9 +1149,6 @@ export default function FullWidthTabs() {
   const displayedProjects = showAllProjects
     ? filteredProjects
     : filteredProjects.slice(0, initialItems);
-  const displayedCertificates = showAllCertificates
-    ? certificates
-    : certificates.slice(0, initialItems);
 
   // Get unique filters from projects
   const projectFilters = [
@@ -1094,7 +1194,7 @@ export default function FullWidthTabs() {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid max-w-4xl grid-cols-2 gap-4 mx-auto mb-8 md:grid-cols-4">
+        <div className="grid max-w-4xl grid-cols-2 gap-4 mx-auto mb-8 md:grid-cols-3">
           {[
             {
               icon: Code,
@@ -1102,13 +1202,6 @@ export default function FullWidthTabs() {
               value: projects.length,
               bgIcon: Rocket,
               color: "blue",
-            },
-            {
-              icon: Award,
-              label: "Certificates",
-              value: certificates.length,
-              bgIcon: Trophy,
-              color: "purple",
             },
             {
               icon: Boxes,
@@ -1251,17 +1344,10 @@ export default function FullWidthTabs() {
             />
             <Tab
               icon={
-                <Award className="w-5 h-5 mb-2 transition-all duration-300" />
-              }
-              label="Certificates"
-              {...a11yProps(1)}
-            />
-            <Tab
-              icon={
                 <Boxes className="w-5 h-5 mb-2 transition-all duration-300" />
               }
               label="Tech Stack"
-              {...a11yProps(2)}
+              {...a11yProps(1)}
             />
           </Tabs>
         </AppBar>
@@ -1322,44 +1408,8 @@ export default function FullWidthTabs() {
             )}
           </TabPanel>
 
-          {/* Certificates Tab */}
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            <div className="container flex items-center justify-center mx-auto overflow-hidden">
-              {loading ? (
-                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <SkeletonCard key={index} />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-                  {displayedCertificates.map((certificate, index) => (
-                    <div
-                      key={index}
-                      data-aos="flip-left"
-                      data-aos-duration="800"
-                      data-aos-delay={index * 150}
-                      className="transition-all duration-500 transform hover:scale-105 hover:rotate-1"
-                    >
-                      <Certificate ImgSertif={certificate.Img} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {certificates.length > initialItems && (
-              <div className="flex justify-start w-full mt-6">
-                <ToggleButton
-                  onClick={() => toggleShowMore("certificates")}
-                  isShowingMore={showAllCertificates}
-                />
-              </div>
-            )}
-          </TabPanel>
-
           {/* Tech Stack Tab */}
-          <TabPanel value={value} index={2} dir={theme.direction}>
+          <TabPanel value={value} index={1} dir={theme.direction}>
             <div className="container pb-8 mx-auto overflow-hidden">
               {/* Enhanced Header Section */}
               <div className="mb-10 text-center">
@@ -1396,9 +1446,16 @@ export default function FullWidthTabs() {
                       borderColor: "border-green-500/30",
                     },
                     {
-                      label: "Tools",
-                      count: techStacks.filter(
-                        (t) => t.category === "Build Tool"
+                      label: "Tools & Platforms",
+                      count: techStacks.filter((t) =>
+                        [
+                          "Build Tool",
+                          "Deployment",
+                          "Library",
+                          "Version Control",
+                          "Development Tool",
+                          "Platform",
+                        ].includes(t.category)
                       ).length,
                       icon: Wrench,
                       gradient: "from-orange-500 to-red-500",
@@ -1406,10 +1463,8 @@ export default function FullWidthTabs() {
                       borderColor: "border-orange-500/30",
                     },
                     {
-                      label: "Cloud & More",
-                      count: techStacks.filter((t) =>
-                        ["Deployment", "Library"].includes(t.category)
-                      ).length,
+                      label: "All Categories",
+                      count: techStacks.length,
                       icon: Cloud,
                       gradient: "from-purple-500 to-pink-500",
                       bgPattern: "bg-purple-500/10",
@@ -1516,6 +1571,33 @@ export default function FullWidthTabs() {
                       ["Build Tool", "Deployment", "Library"].includes(
                         tech.category
                       )
+                    )
+                    .map((tech) => ({
+                      name: tech.language,
+                      icon: tech.icon,
+                      proficiency: tech.proficiency,
+                      category: tech.category,
+                      experience: tech.experience,
+                      projectsCount: tech.projectsCount,
+                      capabilities: tech.capabilities,
+                      learningPath: tech.learningPath,
+                      nextSteps: tech.nextSteps,
+                      resources: tech.resources,
+                      lastUpdated: tech.lastUpdated,
+                    }))}
+                  onSkillClick={handleSkillClick}
+                />
+
+                <CategorySection
+                  title="Development Environment & Version Control"
+                  icon={Package}
+                  skills={techStacks
+                    .filter((tech) =>
+                      [
+                        "Version Control",
+                        "Development Tool",
+                        "Platform",
+                      ].includes(tech.category)
                     )
                     .map((tech) => ({
                       name: tech.language,
