@@ -1171,6 +1171,10 @@ export default function FullWidthTabs() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNavFixed, setIsNavFixed] = useState(false);
+  const navRef = useRef(null);
+  const portfolioRef = useRef(null);
+  const [navOriginalPosition, setNavOriginalPosition] = useState(0);
   const isMobile = window.innerWidth < 768;
   const initialItems = isMobile ? 4 : 6;
 
@@ -1184,6 +1188,52 @@ export default function FullWidthTabs() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Smart navigation positioning
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!navRef.current || !portfolioRef.current) return;
+
+      const portfolioElement = portfolioRef.current;
+      const scrollTop = window.pageYOffset;
+      const portfolioTop = portfolioElement.offsetTop;
+      const portfolioBottom = portfolioTop + portfolioElement.offsetHeight;
+      const navbarHeight = 80; // Approximate navbar height
+
+      // Store original position when first calculated
+      if (navOriginalPosition === 0) {
+        const navTop =
+          portfolioTop +
+          (portfolioElement.querySelector(".statistics-section")
+            ?.offsetHeight || 400);
+        setNavOriginalPosition(navTop);
+      }
+
+      // Check if we're within the portfolio section
+      const isInPortfolioSection =
+        scrollTop >= portfolioTop &&
+        scrollTop <= portfolioBottom - window.innerHeight;
+
+      // Check if we've scrolled past the navigation's original position
+      const hasScrolledPastNav =
+        scrollTop + navbarHeight >= navOriginalPosition;
+
+      // Set fixed state based on conditions
+      if (isInPortfolioSection && hasScrolledPastNav) {
+        setIsNavFixed(true);
+      } else {
+        setIsNavFixed(false);
+      }
+    };
+
+    // Set up the scroll listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Calculate initial positions after component mounts
+    setTimeout(handleScroll, 100);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [navOriginalPosition]);
 
   useEffect(() => {
     AOS.init({
@@ -1268,6 +1318,7 @@ export default function FullWidthTabs() {
 
   return (
     <div
+      ref={portfolioRef}
       className="md:px-[10%] px-[5%] w-full sm:mt-0 mt-[3rem] bg-[#030014] overflow-hidden relative"
       id="Portofolio"
     >
@@ -1282,7 +1333,7 @@ export default function FullWidthTabs() {
       </div>
 
       {/* Enhanced Header with Statistics */}
-      <div className="relative pb-10 text-center">
+      <div className="relative pb-10 text-center statistics-section">
         <div data-aos="fade-up" data-aos-duration="1000">
           <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7] mb-4">
             Portfolio Showcase
@@ -1365,238 +1416,260 @@ export default function FullWidthTabs() {
       </div>
 
       <Box sx={{ width: "100%" }}>
-        {/* Floating Morphing Navigation */}
-        <div className="relative mb-12" data-aos="fade-up" data-aos-delay="300">
-          {/* Central Navigation Hub */}
-          <div className="flex justify-center mb-8">
-            <div className="relative">
-              {/* Main Navigation Container */}
-              <div className="relative px-2 py-2 border shadow-2xl bg-gradient-to-r from-slate-900/95 to-slate-800/95 border-slate-600/40 rounded-3xl backdrop-blur-2xl">
-                {/* Morphing Background Slider */}
+        {/* Smart Fixed Tab Navigation */}
+        <div className="relative py-4 mb-12">
+          {/* Fixed Tab Container */}
+          <div
+            ref={navRef}
+            className={`transition-all duration-500 ease-in-out ${
+              isNavFixed
+                ? "fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-auto"
+                : "relative w-full"
+            }`}
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            {/* Central Navigation Hub */}
+            <div className="flex justify-center">
+              <div className="relative">
+                {/* Main Navigation Container */}
                 <div
-                  className={`absolute top-2 bottom-2 w-1/2 transition-all duration-700 ease-out transform rounded-2xl ${
-                    value === 0
-                      ? "left-2 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 shadow-lg shadow-purple-500/30"
-                      : "left-1/2 ml-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 shadow-lg shadow-blue-500/30"
+                  className={`relative px-2 py-2 border shadow-2xl bg-gradient-to-r from-slate-900/95 to-slate-800/95 border-slate-600/40 rounded-3xl backdrop-blur-2xl transition-all duration-500 ${
+                    isNavFixed
+                      ? "scale-95 shadow-3xl bg-gradient-to-r from-slate-900/98 to-slate-800/98"
+                      : ""
                   }`}
                 >
-                  {/* Animated Border */}
+                  {/* Morphing Background Slider */}
                   <div
-                    className={`absolute inset-0 rounded-2xl border-2 ${
+                    className={`absolute top-2 bottom-2 w-1/2 transition-all duration-700 ease-out transform rounded-2xl ${
                       value === 0
-                        ? "border-purple-400/40"
-                        : "border-blue-400/40"
-                    } opacity-60`}
-                  ></div>
+                        ? "left-2 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 shadow-lg shadow-purple-500/30"
+                        : "left-1/2 ml-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 shadow-lg shadow-blue-500/30"
+                    }`}
+                  >
+                    {/* Animated Border */}
+                    <div
+                      className={`absolute inset-0 rounded-2xl border-2 ${
+                        value === 0
+                          ? "border-purple-400/40"
+                          : "border-blue-400/40"
+                      } opacity-60`}
+                    ></div>
 
-                  {/* Glowing Orb */}
-                  {/* <div
+                    {/* Glowing Orb */}
+                    {/* <div
                     className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full ${
                       value === 0
                         ? "bg-gradient-to-r from-purple-400 to-indigo-400 shadow-lg shadow-purple-400/50"
                         : "bg-gradient-to-r from-blue-400 to-cyan-400 shadow-lg shadow-blue-400/50"
                     } animate-pulse`}
                   ></div> */}
-                </div>
+                  </div>
 
-                {/* Navigation Options */}
-                <div className="relative z-10 flex">
-                  {/* Projects Tab */}
-                  <button
-                    onClick={() => handleChange(null, 0)}
-                    className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
-                      value === 0
-                        ? "text-white"
-                        : "text-slate-400 hover:text-slate-200"
-                    }`}
-                  >
-                    {/* Icon Container */}
-                    <div className="relative">
-                      <div
-                        className={`p-3 rounded-xl transition-all duration-500 ${
-                          value === 0
-                            ? "bg-white/10 backdrop-blur-sm"
-                            : "bg-transparent group-hover:bg-white/5"
-                        }`}
-                      >
-                        <Code
-                          className={`w-6 h-6 transition-all duration-500 ${
+                  {/* Navigation Options */}
+                  <div className="relative z-10 flex">
+                    {/* Projects Tab */}
+                    <button
+                      onClick={() => handleChange(null, 0)}
+                      className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
+                        value === 0
+                          ? "text-white"
+                          : "text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      {/* Icon Container */}
+                      <div className="relative">
+                        <div
+                          className={`p-3 rounded-xl transition-all duration-500 ${
                             value === 0
-                              ? "text-purple-300 scale-110"
-                              : "text-slate-400 group-hover:text-purple-300 group-hover:scale-110"
+                              ? "bg-white/10 backdrop-blur-sm"
+                              : "bg-transparent group-hover:bg-white/5"
                           }`}
-                        />
-                      </div>
-
-                      {/* Active Indicator */}
-                      {value === 0 && (
-                        <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-purple-500 to-indigo-500">
-                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                        >
+                          <Code
+                            className={`w-6 h-6 transition-all duration-500 ${
+                              value === 0
+                                ? "text-purple-300 scale-110"
+                                : "text-slate-400 group-hover:text-purple-300 group-hover:scale-110"
+                            }`}
+                          />
                         </div>
-                      )}
 
-                      {/* Hover Glow */}
-                      {/* {value !== 0 && (
+                        {/* Active Indicator */}
+                        {value === 0 && (
+                          <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-purple-500 to-indigo-500">
+                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                          </div>
+                        )}
+
+                        {/* Hover Glow */}
+                        {/* {value !== 0 && (
                         <div className="absolute inset-0 transition-opacity duration-300 opacity-0 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 group-hover:opacity-100 blur-lg"></div>
                       )} */}
-                    </div>
-
-                    {/* Text Content */}
-                    <div className="flex flex-col items-start">
-                      <span
-                        className={`text-lg font-bold transition-colors duration-300 ${
-                          value === 0
-                            ? "text-white"
-                            : "text-slate-300 group-hover:text-white"
-                        }`}
-                      >
-                        Projects
-                      </span>
-                      <span
-                        className={`text-sm transition-colors duration-300 ${
-                          value === 0
-                            ? "text-purple-300"
-                            : "text-slate-500 group-hover:text-purple-300"
-                        }`}
-                      >
-                        {projects.length} works
-                      </span>
-                    </div>
-
-                    {/* Status Indicator */}
-                    <div className="absolute top-2 right-2">
-                      <div
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          value === 0
-                            ? "bg-purple-400 animate-pulse scale-125"
-                            : "bg-slate-600 group-hover:bg-purple-400"
-                        }`}
-                      ></div>
-                    </div>
-                  </button>
-
-                  {/* Tech Stack Tab */}
-                  <button
-                    onClick={() => handleChange(null, 1)}
-                    className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
-                      value === 1
-                        ? "text-white"
-                        : "text-slate-400 hover:text-slate-200"
-                    }`}
-                  >
-                    {/* Icon Container */}
-                    <div className="relative">
-                      <div
-                        className={`p-3 rounded-xl transition-all duration-500 ${
-                          value === 1
-                            ? "bg-white/10 backdrop-blur-sm"
-                            : "bg-transparent group-hover:bg-white/5"
-                        }`}
-                      >
-                        <Boxes
-                          className={`w-6 h-6 transition-all duration-500 ${
-                            value === 1
-                              ? "text-blue-300 scale-110"
-                              : "text-slate-400 group-hover:text-blue-300 group-hover:scale-110"
-                          }`}
-                        />
                       </div>
 
-                      {/* Active Indicator */}
-                      {value === 1 && (
-                        <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-blue-500 to-cyan-500">
-                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      {/* Text Content */}
+                      <div className="flex flex-col items-start">
+                        <span
+                          className={`text-lg font-bold transition-colors duration-300 ${
+                            value === 0
+                              ? "text-white"
+                              : "text-slate-300 group-hover:text-white"
+                          }`}
+                        >
+                          Projects
+                        </span>
+                        <span
+                          className={`text-sm transition-colors duration-300 ${
+                            value === 0
+                              ? "text-purple-300"
+                              : "text-slate-500 group-hover:text-purple-300"
+                          }`}
+                        >
+                          {projects.length} works
+                        </span>
+                      </div>
+
+                      {/* Status Indicator */}
+                      <div className="absolute top-2 right-2">
+                        <div
+                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            value === 0
+                              ? "bg-purple-400 animate-pulse scale-125"
+                              : "bg-slate-600 group-hover:bg-purple-400"
+                          }`}
+                        ></div>
+                      </div>
+                    </button>
+
+                    {/* Tech Stack Tab */}
+                    <button
+                      onClick={() => handleChange(null, 1)}
+                      className={`relative flex items-center gap-4 px-8 py-6 transition-all duration-500 group ${
+                        value === 1
+                          ? "text-white"
+                          : "text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      {/* Icon Container */}
+                      <div className="relative">
+                        <div
+                          className={`p-3 rounded-xl transition-all duration-500 ${
+                            value === 1
+                              ? "bg-white/10 backdrop-blur-sm"
+                              : "bg-transparent group-hover:bg-white/5"
+                          }`}
+                        >
+                          <Boxes
+                            className={`w-6 h-6 transition-all duration-500 ${
+                              value === 1
+                                ? "text-blue-300 scale-110"
+                                : "text-slate-400 group-hover:text-blue-300 group-hover:scale-110"
+                            }`}
+                          />
                         </div>
-                      )}
 
-                      {/* Hover Glow */}
-                      {value !== 1 && (
-                        <div className="absolute inset-0 transition-opacity duration-300 opacity-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 group-hover:opacity-100 blur-lg"></div>
-                      )}
-                    </div>
+                        {/* Active Indicator */}
+                        {value === 1 && (
+                          <div className="absolute flex items-center justify-center w-6 h-6 rounded-full -top-1 -right-1 bg-gradient-to-r from-blue-500 to-cyan-500">
+                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                          </div>
+                        )}
 
-                    {/* Text Content */}
-                    <div className="flex flex-col items-start">
-                      <span
-                        className={`text-lg font-bold transition-colors duration-300 ${
-                          value === 1
-                            ? "text-white"
-                            : "text-slate-300 group-hover:text-white"
-                        }`}
-                      >
-                        Tech Stack
-                      </span>
-                      <span
-                        className={`text-sm transition-colors duration-300 ${
-                          value === 1
-                            ? "text-blue-300"
-                            : "text-slate-500 group-hover:text-blue-300"
-                        }`}
-                      >
-                        {techStacks.length} skills
-                      </span>
-                    </div>
+                        {/* Hover Glow */}
+                        {value !== 1 && (
+                          <div className="absolute inset-0 transition-opacity duration-300 opacity-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 group-hover:opacity-100 blur-lg"></div>
+                        )}
+                      </div>
 
-                    {/* Status Indicator */}
-                    <div className="absolute top-2 right-2">
+                      {/* Text Content */}
+                      <div className="flex flex-col items-start">
+                        <span
+                          className={`text-lg font-bold transition-colors duration-300 ${
+                            value === 1
+                              ? "text-white"
+                              : "text-slate-300 group-hover:text-white"
+                          }`}
+                        >
+                          Tech Stack
+                        </span>
+                        <span
+                          className={`text-sm transition-colors duration-300 ${
+                            value === 1
+                              ? "text-blue-300"
+                              : "text-slate-500 group-hover:text-blue-300"
+                          }`}
+                        >
+                          {techStacks.length} skills
+                        </span>
+                      </div>
+
+                      {/* Status Indicator */}
+                      <div className="absolute top-2 right-2">
+                        <div
+                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            value === 1
+                              ? "bg-blue-400 animate-pulse scale-125"
+                              : "bg-slate-600 group-hover:bg-blue-400"
+                          }`}
+                        ></div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Floating Ambient Effects */}
+                <div className="absolute inset-0 -z-10">
+                  {/* Outer Glow */}
+                  <div
+                    className={`absolute inset-0 transition-all duration-700 blur-3xl opacity-20 ${
+                      value === 0
+                        ? "bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500"
+                        : "bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500"
+                    }`}
+                  ></div>
+
+                  {/* Rotating Elements */}
+                  <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                    <div
+                      className={`w-32 h-32 transition-all duration-1000 ${
+                        value === 0 ? "rotate-0" : "rotate-180"
+                      }`}
+                    >
                       <div
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          value === 1
-                            ? "bg-blue-400 animate-pulse scale-125"
-                            : "bg-slate-600 group-hover:bg-blue-400"
-                        }`}
+                        className={`absolute top-0 left-0 w-3 h-3 rounded-full ${
+                          value === 0 ? "bg-purple-400" : "bg-blue-400"
+                        } animate-ping`}
+                      ></div>
+                      <div
+                        className={`absolute top-0 right-0 w-2 h-2 rounded-full ${
+                          value === 0 ? "bg-indigo-400" : "bg-cyan-400"
+                        } animate-pulse`}
+                      ></div>
+                      <div
+                        className={`absolute bottom-0 left-0 w-2 h-2 rounded-full ${
+                          value === 0 ? "bg-purple-300" : "bg-blue-300"
+                        } animate-bounce`}
+                      ></div>
+                      <div
+                        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
+                          value === 0 ? "bg-indigo-300" : "bg-cyan-300"
+                        } animate-pulse`}
                       ></div>
                     </div>
-                  </button>
-                </div>
-              </div>
-
-              {/* Floating Ambient Effects */}
-              <div className="absolute inset-0 -z-10">
-                {/* Outer Glow */}
-                <div
-                  className={`absolute inset-0 transition-all duration-700 blur-3xl opacity-20 ${
-                    value === 0
-                      ? "bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500"
-                      : "bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-500"
-                  }`}
-                ></div>
-
-                {/* Rotating Elements */}
-                <div className="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                  <div
-                    className={`w-32 h-32 transition-all duration-1000 ${
-                      value === 0 ? "rotate-0" : "rotate-180"
-                    }`}
-                  >
-                    <div
-                      className={`absolute top-0 left-0 w-3 h-3 rounded-full ${
-                        value === 0 ? "bg-purple-400" : "bg-blue-400"
-                      } animate-ping`}
-                    ></div>
-                    <div
-                      className={`absolute top-0 right-0 w-2 h-2 rounded-full ${
-                        value === 0 ? "bg-indigo-400" : "bg-cyan-400"
-                      } animate-pulse`}
-                    ></div>
-                    <div
-                      className={`absolute bottom-0 left-0 w-2 h-2 rounded-full ${
-                        value === 0 ? "bg-purple-300" : "bg-blue-300"
-                      } animate-bounce`}
-                    ></div>
-                    <div
-                      className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${
-                        value === 0 ? "bg-indigo-300" : "bg-cyan-300"
-                      } animate-pulse`}
-                    ></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Active Section Description */}
-          <div className="text-center">
+          {/* Active Section Description - Always stays in place */}
+          <div
+            className={`text-center mt-8 transition-all duration-500 ${
+              isNavFixed ? "opacity-75" : "opacity-100"
+            }`}
+          >
             <div
               className={`inline-flex items-center gap-3 px-6 py-3 mb-4 border shadow-xl rounded-2xl backdrop-blur-xl transition-all duration-500 ${
                 value === 0
@@ -2060,6 +2133,52 @@ export default function FullWidthTabs() {
             transform: translateY(0) scale(1);
             opacity: 1;
           }
+        }
+
+        /* Fixed Tab Animations */
+        @keyframes fixedTabSlideIn {
+          0% {
+            transform: translateX(-50%) translateY(-20px) scale(0.9);
+            opacity: 0;
+          }
+          100% {
+            transform: translateX(-50%) translateY(0) scale(0.95);
+            opacity: 1;
+          }
+        }
+
+        @keyframes fixedTabSlideOut {
+          0% {
+            transform: translateX(-50%) translateY(0) scale(0.95);
+            opacity: 1;
+          }
+          100% {
+            transform: translateX(-50%) translateY(-20px) scale(0.9);
+            opacity: 0;
+          }
+        }
+
+        .fixed-tab-enter {
+          animation: fixedTabSlideIn 0.5s ease-out forwards;
+        }
+
+        .fixed-tab-exit {
+          animation: fixedTabSlideOut 0.3s ease-in forwards;
+        }
+
+        /* Enhanced shadow for fixed tabs */
+        .shadow-3xl {
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ensure perfect centering for fixed navigation */
+        .fixed-nav-center {
+          position: fixed;
+          top: 5rem;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 50;
+          white-space: nowrap;
         }
 
         /* Card hover effects */
