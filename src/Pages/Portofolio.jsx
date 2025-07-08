@@ -1195,6 +1195,7 @@ export default function FullWidthTabs() {
       if (!navRef.current || !portfolioRef.current) return;
 
       const portfolioElement = portfolioRef.current;
+      const contactElement = document.getElementById("Contact");
       const scrollTop = window.pageYOffset;
       const portfolioTop = portfolioElement.offsetTop;
       const portfolioBottom = portfolioTop + portfolioElement.offsetHeight;
@@ -1207,6 +1208,14 @@ export default function FullWidthTabs() {
           (portfolioElement.querySelector(".statistics-section")
             ?.offsetHeight || 400);
         setNavOriginalPosition(navTop);
+      } // Check if contact section is in viewport
+      let isContactVisible = false;
+      if (contactElement) {
+        const contactRect = contactElement.getBoundingClientRect();
+
+        // Contact section is considered visible if it's starting to enter the viewport
+        // Made more sensitive - disappears when contact is 80% into viewport (earlier)
+        isContactVisible = contactRect.top <= window.innerHeight * 0.8; // When contact is 80% into viewport
       }
 
       // Check if we're within the portfolio section
@@ -1219,7 +1228,8 @@ export default function FullWidthTabs() {
         scrollTop + navbarHeight >= navOriginalPosition;
 
       // Set fixed state based on conditions
-      if (isInPortfolioSection && hasScrolledPastNav) {
+      // Hide the fixed nav when contact section becomes visible
+      if (isInPortfolioSection && hasScrolledPastNav && !isContactVisible) {
         setIsNavFixed(true);
       } else {
         setIsNavFixed(false);

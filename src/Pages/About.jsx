@@ -260,12 +260,13 @@ const AboutPage = () => {
 
             <div className="flex flex-col items-center w-full gap-4 lg:flex-row lg:items-start lg:gap-4 lg:px-0">
               <a
-                href="/public/Rumesh_Kumara_CV.pdf"
-                download="Rumesh_Kumara_CV.pdf"
+                href="https://drive.google.com/drive/folders/1mXbIzEshVTSoybafWIW38V5_tm5HCdzX"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full lg:w-auto"
               >
                 <button className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl">
-                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" /> Download CV
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" /> View CV
                 </button>
               </a>
               <a href="#Portofolio" className="w-full lg:w-auto">
