@@ -6,14 +6,12 @@ import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import CardProject from "../components/CardProject";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
   Code,
   Boxes,
-  Search,
-  Filter,
   TrendingUp,
   Star,
   Globe,
@@ -63,18 +61,7 @@ import {
 } from "react-icons/si";
 import { FaExclamationTriangle } from "react-icons/fa";
 
-// Loading Skeleton Component
-const SkeletonCard = () => (
-  <div className="animate-pulse">
-    <div className="p-6 space-y-4 bg-white/5 rounded-xl">
-      <div className="h-40 rounded-lg bg-white/10"></div>
-      <div className="space-y-2">
-        <div className="w-3/4 h-4 rounded bg-white/10"></div>
-        <div className="w-1/2 h-3 rounded bg-white/10"></div>
-      </div>
-    </div>
-  </div>
-);
+// SkeletonCard removed (unused)
 
 // Statistics Counter Component
 const StatCounter = ({ end, duration = 2000, suffix = "", prefix = "" }) => {
@@ -132,95 +119,13 @@ const StatCounter = ({ end, duration = 2000, suffix = "", prefix = "" }) => {
 };
 
 // Enhanced Toggle Button with more animations
-const ToggleButton = ({ onClick, isShowingMore }) => (
-  <button
-    onClick={onClick}
-    className="relative flex items-center gap-2 px-4 py-2 overflow-hidden text-sm font-medium transition-all duration-500 ease-out transform border rounded-lg shadow-lg group text-slate-300 hover:text-white bg-gradient-to-r from-white/5 to-white/10 hover:from-purple-500/10 hover:to-blue-500/10 border-white/10 hover:border-purple-500/30 backdrop-blur-sm hover:scale-105 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/20"
-  >
-    <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-r from-purple-600/0 via-purple-600/5 to-blue-600/0 group-hover:opacity-100"></div>
-
-    <span className="relative z-10 flex items-center gap-2">
-      {isShowingMore ? "Show Less" : "Show More"}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`transition-all duration-500 ${
-          isShowingMore
-            ? "group-hover:-translate-y-1 rotate-180"
-            : "group-hover:translate-y-1"
-        }`}
-      >
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
-    </span>
-
-    <div
-      className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 
-                    transition-all duration-500 group-hover:w-full"
-    ></div>
-
-    <div
-      className="absolute inset-0 transition-opacity duration-500 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100"
-      style={{
-        background:
-          "linear-gradient(45deg, transparent 30%, rgba(139, 92, 246, 0.1) 50%, transparent 70%)",
-        transform: "translateX(-100%)",
-        animation: "shimmer 1.5s infinite",
-      }}
-    ></div>
-  </button>
-);
+// ToggleButton removed (unused)
 
 // Search and Filter Component
-const SearchFilter = ({
-  searchTerm,
-  onSearchChange,
-  selectedFilter,
-  onFilterChange,
-  filters,
-}) => (
-  <div
-    className="flex flex-col gap-4 mb-6 sm:flex-row"
-    data-aos="fade-up"
-    data-aos-delay="200"
-  >
-    <div className="relative flex-1">
-      <Search className="absolute w-4 h-4 transform -translate-y-1/2 left-3 top-1/2 text-slate-400" />
-      <input
-        type="text"
-        placeholder="Search projects..."
-        value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="w-full py-2 pl-10 pr-4 text-white transition-all duration-300 border rounded-lg bg-white/5 border-white/10 placeholder-slate-400 focus:outline-none focus:border-purple-500/50 focus:bg-white/10"
-      />
-    </div>
+// SearchFilter removed (unused)
 
-    <div className="relative">
-      <Filter className="absolute w-4 h-4 transform -translate-y-1/2 left-3 top-1/2 text-slate-400" />
-      <select
-        value={selectedFilter}
-        onChange={(e) => onFilterChange(e.target.value)}
-        className="pl-10 pr-8 py-2 bg-white/5 border border-white/10 rounded-lg
-                   text-white focus:outline-none focus:border-purple-500/50
-                   focus:bg-white/10 transition-all duration-300 min-w-[140px]"
-      >
-        <option value="all">All Projects</option>
-        {filters.map((filter) => (
-          <option key={filter} value={filter}>
-            {filter}
-          </option>
-        ))}
-      </select>
-    </div>
-  </div>
-);
+// Remove leftover incomplete JSX from deleted SearchFilter
+// Removed leftover incomplete JSX from deleted SearchFilter
 
 // Enhanced TabPanel with fade transitions
 function TabPanel({ children, value, index, ...other }) {
@@ -1160,14 +1065,50 @@ const techStacks = [
   },
 ];
 
+const dummyProjects = [
+  {
+    id: "dummy-1",
+    title: "Modern Portfolio Website",
+    description:
+      "A visually stunning and fully responsive portfolio website built with React, Tailwind CSS, and Firebase. Features project showcase, animated transitions, and a contact form.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+    TechStack: ["React", "Tailwind CSS", "Firebase"],
+    demoUrl: "https://your-demo-link.com",
+    repoUrl: "https://github.com/yourusername/portfolio",
+  },
+  {
+    id: "dummy-2",
+    title: "Sample Project",
+    description:
+      "This is a sample project to demonstrate the portfolio layout. It includes basic features and a simple design.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=600&q=80",
+    TechStack: ["HTML", "CSS", "JavaScript"],
+    demoUrl: "https://your-demo-link.com/sample-project",
+    repoUrl: "https://github.com/yourusername/sample-project",
+  },
+];
+
 export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = useState(0);
-  const [projects, setProjects] = useState([]);
+  // Add a dummy project as the initial state
+  const [projects, setProjects] = useState([
+    {
+      id: "dummy-1",
+      title: "Modern Portfolio Website",
+      description:
+        "A visually stunning and fully responsive portfolio website built with React, Tailwind CSS, and Firebase. Features project showcase, animated transitions, and a contact form.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+      TechStack: ["React", "Tailwind CSS", "Firebase"],
+      demoUrl: "https://your-demo-link.com",
+      repoUrl: "https://github.com/yourusername/portfolio",
+    },
+  ]);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("all");
+  // Removed: loading, searchTerm, selectedFilter (unused after project section removal)
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const [selectedSkill, setSelectedSkill] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -1255,28 +1196,23 @@ export default function FullWidthTabs() {
 
   const fetchData = useCallback(async () => {
     try {
-      setLoading(true);
-
-      // Simulate loading delay for better UX
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      // Directly fetch projects without artificial delay
       const projectCollection = collection(db, "projects");
-
       const projectSnapshot = await getDocs(projectCollection);
-
       const projectData = projectSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
         TechStack: doc.data().TechStack || [],
       }));
 
-      setProjects(projectData);
-
-      localStorage.setItem("projects", JSON.stringify(projectData));
+      // Always show dummy projects + fetched projects
+      setProjects([...dummyProjects, ...projectData]);
+      localStorage.setItem(
+        "projects",
+        JSON.stringify([...dummyProjects, ...projectData])
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
@@ -1288,33 +1224,15 @@ export default function FullWidthTabs() {
     setValue(newValue);
   };
 
-  const toggleShowMore = useCallback((type) => {
-    if (type === "projects") {
-      setShowAllProjects((prev) => !prev);
-    }
-  }, []);
+  // Removed: toggleShowMore (unused after project section removal)
 
   // Filter projects based on search and filter
-  const filteredProjects = projects.filter((project) => {
-    const matchesSearch =
-      project.Title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.Description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter =
-      selectedFilter === "all" ||
-      project.TechStack?.some((tech) =>
-        tech.toLowerCase().includes(selectedFilter.toLowerCase())
-      );
-    return matchesSearch && matchesFilter;
-  });
+  // Removed: filteredProjects (unused after project section removal)
 
-  const displayedProjects = showAllProjects
-    ? filteredProjects
-    : filteredProjects.slice(0, initialItems);
+  // Removed: displayedProjects (unused after project section removal)
 
   // Get unique filters from projects
-  const projectFilters = [
-    ...new Set(projects.flatMap((project) => project.TechStack || [])),
-  ];
+  // Removed: projectFilters (unused after project section removal)
 
   const handleSkillClick = (skill) => {
     setSelectedSkill(skill);
@@ -1723,52 +1641,127 @@ export default function FullWidthTabs() {
         >
           {/* Projects Tab */}
           <TabPanel value={value} index={0} dir={theme.direction}>
-            <SearchFilter
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              selectedFilter={selectedFilter}
-              onFilterChange={setSelectedFilter}
-              filters={projectFilters}
-            />
-
-            <div className="container flex items-center justify-center mx-auto overflow-hidden">
-              {loading ? (
-                <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3">
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <SkeletonCard key={index} />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3">
-                  {displayedProjects.map((project, index) => (
-                    <div
-                      key={project.id || index}
-                      data-aos="fade-up"
-                      data-aos-duration="800"
-                      data-aos-delay={index * 100}
-                      className="transition-all duration-500 transform hover:scale-105"
-                    >
-                      <CardProject
-                        Img={project.Img}
-                        Title={project.Title}
-                        Description={project.Description}
-                        Link={project.Link}
-                        id={project.id}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {filteredProjects.length > initialItems && (
-              <div className="flex justify-start w-full mt-6">
-                <ToggleButton
-                  onClick={() => toggleShowMore("projects")}
-                  isShowingMore={showAllProjects}
-                />
+            {/* Project Section: Display projects as cards */}
+            <div className="container pb-8 mx-auto">
+              <div className="mb-10 text-center">
+                <h3 className="mb-4 text-3xl font-bold text-white">
+                  My{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                    Projects
+                  </span>
+                </h3>
+                <p className="max-w-2xl mx-auto mb-8 text-slate-400">
+                  A showcase of my creative work, technical expertise, and
+                  learning journey through real-world projects.
+                </p>
               </div>
-            )}
+
+              {/* Projects Grid */}
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {projects.length === 0 ? (
+                  <div className="py-12 text-center col-span-full text-slate-400">
+                    No projects found.
+                  </div>
+                ) : (
+                  projects.map((project, idx) => (
+                    <div
+                      key={project.id || idx}
+                      className="relative flex flex-col p-6 transition-all duration-500 border shadow-xl bg-white/5 border-white/10 rounded-2xl hover:scale-105 hover:shadow-purple-500/20 group card-hover-effect"
+                      data-aos="fade-up"
+                      data-aos-delay={idx * 100}
+                    >
+                      {/* Project Image */}
+                      {project.imageUrl && (
+                        <div className="mb-4 overflow-hidden rounded-xl aspect-video bg-slate-800">
+                          <img
+                            src={project.imageUrl}
+                            alt={project.title}
+                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+
+                      {/* Project Title */}
+                      <h4
+                        className="mb-2 text-xl font-bold text-white truncate"
+                        title={project.title}
+                      >
+                        {project.title}
+                      </h4>
+
+                      {/* Project Description */}
+                      <p className="mb-4 text-slate-400 line-clamp-3 min-h-[60px]">
+                        {project.description}
+                      </p>
+
+                      {/* Tech Stack */}
+                      {project.TechStack && project.TechStack.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.TechStack.map((tech, i) => (
+                            <span
+                              key={tech + i}
+                              className="px-2 py-1 text-xs font-medium text-purple-200 border rounded bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-purple-500/20"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Project Links */}
+                      <div className="flex items-center gap-4 mt-auto">
+                        {project.demoUrl && (
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-blue-300 transition-colors duration-300 rounded hover:text-white hover:bg-blue-500/20"
+                          >
+                            Live Demo
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M14 3h7m0 0v7m0-7L10 14m-7 7h7a2 2 0 002-2v-7"
+                              />
+                            </svg>
+                          </a>
+                        )}
+                        {project.repoUrl && (
+                          <a
+                            href={project.repoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-purple-300 transition-colors duration-300 rounded hover:text-white hover:bg-purple-500/20"
+                          >
+                            Source Code
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M16 18l6-6-6-6M8 6l-6 6 6 6"
+                              />
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </TabPanel>
 
           {/* Tech Stack Tab */}
