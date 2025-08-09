@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { db, collection } from "../firebase";
-import { getDocs } from "firebase/firestore";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
@@ -1070,10 +1068,11 @@ const dummyProjects = [
     id: "dummy-1",
     title: "Modern Portfolio Website",
     description:
-      "A visually stunning and fully responsive portfolio website built with React, Tailwind CSS, and Firebase. Features project showcase, animated transitions, and a contact form.",
+      "A visually stunning and fully responsive portfolio website built with React and Tailwind CSS. Features project showcase, animated transitions, and a contact form.",
     imageUrl:
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
-    TechStack: ["React", "Tailwind CSS", "Firebase"],
+    TechStack: ["React", "Tailwind CSS"],
+    tags: ["Web", "Frontend", "Featured"],
     demoUrl: "https://your-demo-link.com",
     repoUrl: "https://github.com/yourusername/portfolio",
   },
@@ -1085,8 +1084,21 @@ const dummyProjects = [
     imageUrl:
       "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=600&q=80",
     TechStack: ["HTML", "CSS", "JavaScript"],
+    tags: ["Web", "Basic"],
     demoUrl: "https://your-demo-link.com/sample-project",
     repoUrl: "https://github.com/yourusername/sample-project",
+  },
+  {
+    id: "dummy-3",
+    title: "UI/UX Dashboard Design",
+    description:
+      "An intuitive and visually appealing dashboard interface for data analytics. Features clean design principles, interactive charts, and a responsive layout for all device sizes.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+    TechStack: ["Figma", "Adobe XD", "UI/UX Design"],
+    tags: ["UI/UX", "Featured", "Design"],
+    demoUrl: "https://www.figma.com/proto/example-dashboard",
+    repoUrl: "https://github.com/yourusername/dashboard-design",
   },
 ];
 
@@ -1099,15 +1111,41 @@ export default function FullWidthTabs() {
       id: "dummy-1",
       title: "Modern Portfolio Website",
       description:
-        "A visually stunning and fully responsive portfolio website built with React, Tailwind CSS, and Firebase. Features project showcase, animated transitions, and a contact form.",
+        "A visually stunning and fully responsive portfolio website built with React and Tailwind CSS. Features project showcase, animated transitions, and a contact form.",
       imageUrl:
         "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
-      TechStack: ["React", "Tailwind CSS", "Firebase"],
+      TechStack: ["React", "Tailwind CSS"],
+      tags: ["Web", "Frontend", "Featured"],
       demoUrl: "https://your-demo-link.com",
       repoUrl: "https://github.com/yourusername/portfolio",
     },
+    {
+      id: "dummy-2",
+      title: "Sample Project",
+      description:
+        "This is a sample project to demonstrate the portfolio layout. It includes basic features and a simple design.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=600&q=80",
+      TechStack: ["HTML", "CSS", "JavaScript"],
+      tags: ["Web", "Basic"],
+      demoUrl: "https://your-demo-link.com/sample-project",
+      repoUrl: "https://github.com/yourusername/sample-project",
+    },
+    {
+      id: "dummy-3",
+      title: "UI/UX Dashboard Design",
+      description:
+        "An intuitive and visually appealing dashboard interface for data analytics. Features clean design principles, interactive charts, and a responsive layout for all device sizes.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+      TechStack: ["Figma", "Adobe XD", "UI/UX Design"],
+      tags: ["UI/UX", "Featured", "Design"],
+      demoUrl: "https://www.figma.com/proto/example-dashboard",
+      repoUrl: "https://github.com/yourusername/dashboard-design",
+    },
   ]);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [selectedTag, setSelectedTag] = useState(null); // New state for tag filtering
   // Removed: loading, searchTerm, selectedFilter (unused after project section removal)
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const [selectedSkill, setSelectedSkill] = useState(null);
@@ -1194,26 +1232,10 @@ export default function FullWidthTabs() {
     });
   }, []);
 
-  const fetchData = useCallback(async () => {
-    try {
-      // Directly fetch projects without artificial delay
-      const projectCollection = collection(db, "projects");
-      const projectSnapshot = await getDocs(projectCollection);
-      const projectData = projectSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-        TechStack: doc.data().TechStack || [],
-      }));
-
-      // Always show dummy projects + fetched projects
-      setProjects([...dummyProjects, ...projectData]);
-      localStorage.setItem(
-        "projects",
-        JSON.stringify([...dummyProjects, ...projectData])
-      );
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  // No need to fetch anything - we're using dummy projects only
+  const fetchData = useCallback(() => {
+    // Store the dummy projects in localStorage for reference
+    localStorage.setItem("projects", JSON.stringify(dummyProjects));
   }, []);
 
   useEffect(() => {
@@ -1224,10 +1246,19 @@ export default function FullWidthTabs() {
     setValue(newValue);
   };
 
-  // Removed: toggleShowMore (unused after project section removal)
+  // Handle tag selection
+  const handleTagClick = (tag) => {
+    setSelectedTag(tag === selectedTag ? null : tag);
+  };
 
-  // Filter projects based on search and filter
-  // Removed: filteredProjects (unused after project section removal)
+  // Filter projects based on tags
+  const filteredProjects = selectedTag
+    ? projects.filter(
+        (project) => project.tags && project.tags.includes(selectedTag)
+      )
+    : projects;
+
+  // Removed: toggleShowMore (unused after project section removal)
 
   // Removed: displayedProjects (unused after project section removal)
 
@@ -1650,20 +1681,78 @@ export default function FullWidthTabs() {
                     Projects
                   </span>
                 </h3>
-                <p className="max-w-2xl mx-auto mb-8 text-slate-400">
+                <p className="max-w-2xl mx-auto mb-6 text-slate-400">
                   A showcase of my creative work, technical expertise, and
                   learning journey through real-world projects.
                 </p>
+
+                {/* Project Tags Filter */}
+                <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+                  <button
+                    onClick={() => handleTagClick(null)}
+                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                      !selectedTag
+                        ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
+                        : "bg-white/10 text-slate-300 hover:bg-white/20"
+                    }`}
+                  >
+                    All Projects
+                  </button>
+
+                  <button
+                    onClick={() => handleTagClick("UI/UX")}
+                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                      selectedTag === "UI/UX"
+                        ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                        : "bg-white/10 text-slate-300 hover:bg-white/20"
+                    }`}
+                  >
+                    UI/UX
+                  </button>
+
+                  <button
+                    onClick={() => handleTagClick("Web")}
+                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                      selectedTag === "Web"
+                        ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                        : "bg-white/10 text-slate-300 hover:bg-white/20"
+                    }`}
+                  >
+                    Web
+                  </button>
+
+                  <button
+                    onClick={() => handleTagClick("Featured")}
+                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                      selectedTag === "Featured"
+                        ? "bg-gradient-to-r from-green-500 to-teal-500 text-white"
+                        : "bg-white/10 text-slate-300 hover:bg-white/20"
+                    }`}
+                  >
+                    Featured
+                  </button>
+
+                  <button
+                    onClick={() => handleTagClick("Design")}
+                    className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                      selectedTag === "Design"
+                        ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+                        : "bg-white/10 text-slate-300 hover:bg-white/20"
+                    }`}
+                  >
+                    Design
+                  </button>
+                </div>
               </div>
 
               {/* Projects Grid */}
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {projects.length === 0 ? (
+                {filteredProjects.length === 0 ? (
                   <div className="py-12 text-center col-span-full text-slate-400">
-                    No projects found.
+                    No projects found. Try a different tag filter.
                   </div>
                 ) : (
-                  projects.map((project, idx) => (
+                  filteredProjects.map((project, idx) => (
                     <div
                       key={project.id || idx}
                       className="relative flex flex-col p-6 transition-all duration-500 border shadow-xl bg-white/5 border-white/10 rounded-2xl hover:scale-105 hover:shadow-purple-500/20 group card-hover-effect"
@@ -1693,6 +1782,45 @@ export default function FullWidthTabs() {
                       <p className="mb-4 text-slate-400 line-clamp-3 min-h-[60px]">
                         {project.description}
                       </p>
+
+                      {/* Project Tags */}
+                      {project.tags && project.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {project.tags.map((tag, i) => {
+                            // Define color schemes for different tags
+                            let tagColorClass = "";
+                            switch (tag) {
+                              case "UI/UX":
+                                tagColorClass =
+                                  "from-pink-500/30 to-orange-500/30 border-pink-500/30 text-pink-200";
+                                break;
+                              case "Featured":
+                                tagColorClass =
+                                  "from-green-500/30 to-teal-500/30 border-green-500/30 text-green-200";
+                                break;
+                              case "Design":
+                                tagColorClass =
+                                  "from-indigo-500/30 to-purple-500/30 border-indigo-500/30 text-indigo-200";
+                                break;
+                              case "Web":
+                              default:
+                                tagColorClass =
+                                  "from-blue-500/30 to-cyan-500/30 border-blue-500/30 text-blue-200";
+                                break;
+                            }
+
+                            return (
+                              <span
+                                key={tag + i}
+                                onClick={() => handleTagClick(tag)}
+                                className={`px-2 py-1 text-xs font-medium rounded-full bg-gradient-to-r border cursor-pointer hover:opacity-80 ${tagColorClass}`}
+                              >
+                                {tag === "UI/UX" ? "UI/UX" : tag}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
 
                       {/* Tech Stack */}
                       {project.TechStack && project.TechStack.length > 0 && (
