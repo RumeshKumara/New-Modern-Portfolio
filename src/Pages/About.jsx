@@ -8,6 +8,14 @@ import {
   Globe,
   ArrowUpRight,
   Sparkles,
+  MapPin,
+  Laptop,
+  GraduationCap,
+  Atom,
+  Palette,
+  Smartphone,
+  Coffee,
+  Cloud,
 } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -251,11 +259,51 @@ const AboutPage = () => {
               data-aos="fade-right"
               data-aos-duration="1500"
             >
-              I'm a passionate web developer 🧑🏻‍💻 with a focus on creating
-              innovative and user-friendly web applications. With a strong
-              foundation in modern web technologies, I strive to deliver
-              high-quality solutions that enhance user experiences and drive
-              business success.
+              I’m Rumesh Kumara from{" "}
+              <MapPin
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              Embilipitiya, Sri Lanka, an adaptable aspiring{" "}
+              <Laptop
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              Software Engineer seeking an internship to deepen expertise in
+              emerging technologies and contribute to impactful real-world
+              projects. Currently a{" "}
+              <GraduationCap
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              3rd-year Software Engineering student at the Faculty of Computing,
+              Sabaragamuwa University, with hands-on experience at ACPT building
+              scalable applications using{" "}
+              <Atom
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              React,{" "}
+              <Palette
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              UI/UX,{" "}
+              <Smartphone
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              React Native, and{" "}
+              <Coffee
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              Spring Boot, and deploying solutions on{" "}
+              <Cloud
+                className="inline w-4 h-4 mx-1 text-[#a855f7]"
+                aria-hidden="true"
+              />
+              AWS for enhanced performance and reliability.
             </p>
 
             <div className="flex flex-col items-center w-full gap-4 lg:flex-row lg:items-start lg:gap-4 lg:px-0">
