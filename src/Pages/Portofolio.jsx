@@ -59,6 +59,15 @@ import {
 } from "react-icons/si";
 import { FaExclamationTriangle } from "react-icons/fa";
 
+// Add: import local project images once
+import imgVscode from "../assets/project/vscode.png";
+import imgTravel from "../assets/project/travel.png";
+import imgOtp from "../assets/project/otp.png";
+import imgLogin from "../assets/project/login.png";
+import imgInterviewGenie from "../assets/project/interviewgenie.png";
+import imgTailwind from "../assets/project/tailwind.png";
+import imgCommertial from "../assets/project/commertial.png";
+
 // SkeletonCard removed (unused)
 
 // Statistics Counter Component
@@ -1063,13 +1072,24 @@ const techStacks = [
   },
 ];
 
+// Centralize local project images in a single object
+const projectImages = {
+  vscode: imgVscode,
+  travel: imgTravel,
+  otp: imgOtp,
+  login: imgLogin,
+  interviewgenie: imgInterviewGenie,
+  tailwind: imgTailwind,
+  commertial: imgCommertial,
+};
+
 const dummyProjects = [
   {
     id: "dummy-1",
     title: "Modern Portfolio Website",
     description:
       "A visually stunning and fully responsive portfolio website built with React and Tailwind CSS. Features project showcase, animated transitions, and a contact form.",
-    imageUrl: "/src/assets/project/tailwind.png",
+    imageUrl: projectImages.tailwind,
     TechStack: ["React", "Tailwind CSS"],
     tags: ["Web", "Frontend", "Featured"],
     demoUrl: "https://your-demo-link.com",
@@ -1080,7 +1100,7 @@ const dummyProjects = [
     title: "Tailwind CSS Project",
     description:
       "A project showcasing the utility-first CSS framework, Tailwind CSS, for building modern web interfaces.",
-    imageUrl: "/src/assets/project/tailwind.png",
+    imageUrl: projectImages.tailwind,
     TechStack: ["HTML", "Tailwind CSS", "JavaScript"],
     tags: ["Web", "Basic"],
     demoUrl: "#",
@@ -1110,7 +1130,7 @@ export default function FullWidthTabs() {
       title: "CodeFlow AI VS Code Extension",
       description:
         "An AI-powered extension for Visual Studio Code that enhances the coding experience with intelligent code suggestions, real-time collaboration, and seamless integration with popular development tools.",
-      imageUrl: "/src/assets/project/vscode.png",
+      imageUrl: projectImages.vscode,
       TechStack: ["TypeScript", "Chart.js", "VS Code API"],
       tags: ["Featured", "Ongoing"],
       demoUrl: "",
@@ -1121,7 +1141,7 @@ export default function FullWidthTabs() {
       title: "Travel Companion App",
       description:
         "A mobile travel application that helps users plan trips, discover local attractions, and navigate unfamiliar locations. Features offline maps, itinerary planning, language translation, and weather forecasts for a seamless travel experience.",
-      imageUrl: "/src/assets/project/travel.png",
+      imageUrl: projectImages.travel,
       TechStack: ["Figma", "UI/UX Design"],
       tags: ["Mobile", "UI/UX"],
       demoUrl: "#",
@@ -1133,7 +1153,7 @@ export default function FullWidthTabs() {
       title: "OTP Verification UI Design",
       description:
         "A modern OTP verification flow for mobile apps with accessible inputs, timer, resend logic, and smooth micro-interactions across states.",
-      imageUrl: "/src/assets/project/otp.png",
+      imageUrl: projectImages.otp,
       TechStack: ["Figma", "UI/UX Design"],
       tags: ["Mobile", "UI/UX", "Design"],
       demoUrl: "#",
@@ -1145,7 +1165,7 @@ export default function FullWidthTabs() {
       title: "Login Form Website UI Design",
       description:
         "A clean and accessible web login experience with email/password, show/hide password, remember me, social auth, validation, and error states.",
-      imageUrl: "/src/assets/project/login.png",
+      imageUrl: projectImages.login,
       TechStack: ["Figma", "UI/UX Design", "HTML", "CSS", "Tailwind CSS"],
       tags: ["Web", "UI/UX", "Design"],
       demoUrl: "#",
@@ -1157,7 +1177,7 @@ export default function FullWidthTabs() {
       title: "AI Mock Interview Project",
       description:
         "An AI-powered mock interview platform that helps users prepare for job interviews by simulating real interview scenarios.",
-      imageUrl: "/src/assets/project/interviewgenie.png",
+      imageUrl: projectImages.interviewgenie,
       TechStack: [
         "React",
         "Tailwind CSS",
@@ -1175,7 +1195,7 @@ export default function FullWidthTabs() {
       title: "Tailwind CSS Project",
       description:
         "A project showcasing the utility-first CSS framework, Tailwind CSS, for building modern web interfaces.",
-      imageUrl: "/src/assets/project/tailwind.png",
+      imageUrl: projectImages.tailwind,
       TechStack: ["HTML", "Tailwind CSS", "JavaScript"],
       tags: ["Web", "Basic"],
       demoUrl: "#",
@@ -1186,7 +1206,7 @@ export default function FullWidthTabs() {
       title: "UI/UX Construction Website Design",
       description:
         "An intuitive and visually appealing construction website design. Features clean design principles, interactive charts, and a responsive layout for all device sizes.",
-      imageUrl: "/src/assets/project/commertial.png",
+      imageUrl: projectImages.commertial,
       TechStack: ["Figma", "UI/UX Design"],
       tags: ["UI/UX", "Featured", "Design"],
       demoUrl:
@@ -1670,6 +1690,15 @@ export default function FullWidthTabs() {
                 </div>
               </div>
             </div>
+
+            {/* Floating Tab Background */}
+            <div
+              className={`absolute inset-0 -z-10 transition-all duration-500 rounded-3xl ${
+                isNavFixed
+                  ? "bg-gradient-to-r from-purple-500/10 to-blue-500/10"
+                  : "bg-gradient-to-r from-purple-500/5 to-blue-500/5"
+              }`}
+            ></div>
           </div>
 
           {/* Active Section Description - Always stays in place */}
