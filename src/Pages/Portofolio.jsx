@@ -1112,8 +1112,7 @@ export default function FullWidthTabs() {
       title: "Fitness Tracker App",
       description:
         "A comprehensive mobile fitness application built with React Native that allows users to track workouts, set fitness goals, and monitor progress. Features include customizable workout plans, real-time statistics, and social sharing capabilities.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80",
+      imageUrl: "/assets/projects/fitness-tracker.jpg",
       TechStack: ["React Native", "Firebase", "Redux", "Expo"],
       tags: ["Mobile", "Featured"],
       demoUrl: "https://expo.dev/@yourname/fitness-tracker",
@@ -1124,8 +1123,7 @@ export default function FullWidthTabs() {
       title: "Travel Companion App",
       description:
         "A mobile travel application that helps users plan trips, discover local attractions, and navigate unfamiliar locations. Features offline maps, itinerary planning, language translation, and weather forecasts for a seamless travel experience.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
+      imageUrl: "/assets/projects/travel-companion.jpg",
       TechStack: ["React Native", "Google Maps API", "Firebase", "Context API"],
       tags: ["Mobile", "UI/UX"],
       demoUrl: "https://play.google.com/store/apps/example",
@@ -1133,23 +1131,28 @@ export default function FullWidthTabs() {
     },
     {
       id: "dummy-1",
-      title: "Modern Portfolio Website",
+      title: "AI Mock Interview Project",
       description:
-        "A visually stunning and fully responsive portfolio website built with React and Tailwind CSS. Features project showcase, animated transitions, and a contact form.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
-      TechStack: ["React", "Tailwind CSS"],
+        "An AI-powered mock interview platform that helps users prepare for job interviews by simulating real interview scenarios.",
+      imageUrl: "/src/assets/project/interviewgenie.png",
+      TechStack: [
+        "React",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Express",
+        "Node.js",
+      ],
       tags: ["Web", "Frontend", "Featured"],
-      demoUrl: "https://your-demo-link.com",
-      repoUrl: "https://github.com/yourusername/portfolio",
+      demoUrl: "#",
+      repoUrl:
+        "https://github.com/InterviewGenie-SUSL/interview-mocker-application",
     },
     {
       id: "dummy-2",
       title: "Sample Project",
       description:
         "This is a sample project to demonstrate the portfolio layout. It includes basic features and a simple design.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=600&q=80",
+      imageUrl: "/assets/projects/sample-project.jpg",
       TechStack: ["HTML", "CSS", "JavaScript"],
       tags: ["Web", "Basic"],
       demoUrl: "https://your-demo-link.com/sample-project",
@@ -1157,15 +1160,14 @@ export default function FullWidthTabs() {
     },
     {
       id: "dummy-3",
-      title: "UI/UX Dashboard Design",
+      title: "UI/UX Construction Website Design",
       description:
-        "An intuitive and visually appealing dashboard interface for data analytics. Features clean design principles, interactive charts, and a responsive layout for all device sizes.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
-      TechStack: ["Figma", "Adobe XD", "UI/UX Design"],
+        "An intuitive and visually appealing construction website design. Features clean design principles, interactive charts, and a responsive layout for all device sizes.",
+      imageUrl: "/src/assets/project/commertial.png",
+      TechStack: ["Figma", "UI/UX Design"],
       tags: ["UI/UX", "Featured", "Design"],
       demoUrl:
-        "https://www.figma.com/file/example-dashboard-design/example-dashboard?type=design&node-id=0%3A1&mode=design&t=xYz123ABC-1",
+        "https://www.figma.com/design/anV20vbalVSrQyJa4cwIhZ/Commertial-?node-id=1-2&t=bI7Ws24WmVKYfwyO-0",
     },
   ]);
   const [showAllProjects, setShowAllProjects] = useState(false);
