@@ -1069,8 +1069,7 @@ const dummyProjects = [
     title: "Modern Portfolio Website",
     description:
       "A visually stunning and fully responsive portfolio website built with React and Tailwind CSS. Features project showcase, animated transitions, and a contact form.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
+    imageUrl: "/src/assets/project/tailwind.png",
     TechStack: ["React", "Tailwind CSS"],
     tags: ["Web", "Frontend", "Featured"],
     demoUrl: "https://your-demo-link.com",
@@ -1078,15 +1077,14 @@ const dummyProjects = [
   },
   {
     id: "dummy-2",
-    title: "Sample Project",
+    title: "Tailwind CSS Project",
     description:
-      "This is a sample project to demonstrate the portfolio layout. It includes basic features and a simple design.",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=600&q=80",
-    TechStack: ["HTML", "CSS", "JavaScript"],
+      "A project showcasing the utility-first CSS framework, Tailwind CSS, for building modern web interfaces.",
+    imageUrl: "/src/assets/project/tailwind.png",
+    TechStack: ["HTML", "Tailwind CSS", "JavaScript"],
     tags: ["Web", "Basic"],
-    demoUrl: "https://your-demo-link.com/sample-project",
-    repoUrl: "https://github.com/yourusername/sample-project",
+    demoUrl: "#",
+    repoUrl: "https://github.com/RumeshKumara/TailwindUsed-Websites",
   },
   {
     id: "dummy-3",
@@ -1109,25 +1107,50 @@ export default function FullWidthTabs() {
   const [projects, setProjects] = useState([
     {
       id: "mobile-app-1",
-      title: "Fitness Tracker App",
+      title: "CodeFlow AI VS Code Extension",
       description:
-        "A comprehensive mobile fitness application built with React Native that allows users to track workouts, set fitness goals, and monitor progress. Features include customizable workout plans, real-time statistics, and social sharing capabilities.",
-      imageUrl: "/assets/projects/fitness-tracker.jpg",
-      TechStack: ["React Native", "Firebase", "Redux", "Expo"],
-      tags: ["Mobile", "Featured"],
-      demoUrl: "https://expo.dev/@yourname/fitness-tracker",
-      repoUrl: "https://github.com/yourusername/fitness-tracker-app",
+        "An AI-powered extension for Visual Studio Code that enhances the coding experience with intelligent code suggestions, real-time collaboration, and seamless integration with popular development tools.",
+      imageUrl: "/src/assets/project/vscode.png",
+      TechStack: ["TypeScript", "Chart.js", "VS Code API"],
+      tags: ["Featured", "Ongoing"],
+      demoUrl: "",
+      repoUrl: "https://github.com/CodeFlow-SUSL/codeflow-ai-susl",
     },
     {
       id: "mobile-app-2",
       title: "Travel Companion App",
       description:
         "A mobile travel application that helps users plan trips, discover local attractions, and navigate unfamiliar locations. Features offline maps, itinerary planning, language translation, and weather forecasts for a seamless travel experience.",
-      imageUrl: "/assets/projects/travel-companion.jpg",
-      TechStack: ["React Native", "Google Maps API", "Firebase", "Context API"],
+      imageUrl: "/src/assets/project/travel.png",
+      TechStack: ["Figma", "UI/UX Design"],
       tags: ["Mobile", "UI/UX"],
-      demoUrl: "https://play.google.com/store/apps/example",
-      repoUrl: "https://github.com/yourusername/travel-companion-app",
+      demoUrl: "#",
+      repoUrl:
+        "https://www.figma.com/design/7vNPPACIf2C6xvusVQCQWM/Travel_App?node-id=0-1&p=f&t=SU8ACoyqwF7YyWwR-0",
+    },
+    {
+      id: "mobile-app-3",
+      title: "OTP Verification UI Design",
+      description:
+        "A modern OTP verification flow for mobile apps with accessible inputs, timer, resend logic, and smooth micro-interactions across states.",
+      imageUrl: "/src/assets/project/otp.png",
+      TechStack: ["Figma", "UI/UX Design"],
+      tags: ["Mobile", "UI/UX", "Design"],
+      demoUrl: "#",
+      repoUrl:
+        "https://www.figma.com/design/fkH3I2q3ZzJaH3uyQjwnZc/OTP-Verification-UI-Design?t=bI7Ws24WmVKYfwyO-0",
+    },
+    {
+      id: "web-ui-1",
+      title: "Login Form Website UI Design",
+      description:
+        "A clean and accessible web login experience with email/password, show/hide password, remember me, social auth, validation, and error states.",
+      imageUrl: "/src/assets/project/login.png",
+      TechStack: ["Figma", "UI/UX Design", "HTML", "CSS", "Tailwind CSS"],
+      tags: ["Web", "UI/UX", "Design"],
+      demoUrl: "#",
+      repoUrl:
+        "https://www.figma.com/design/go4XUuTa03dwlPgC6LwvcZ/SmartBiz?node-id=0-1&p=f&t=sMTp3rnTf7D1OYPO-0",
     },
     {
       id: "dummy-1",
@@ -1149,14 +1172,14 @@ export default function FullWidthTabs() {
     },
     {
       id: "dummy-2",
-      title: "Sample Project",
+      title: "Tailwind CSS Project",
       description:
-        "This is a sample project to demonstrate the portfolio layout. It includes basic features and a simple design.",
-      imageUrl: "/assets/projects/sample-project.jpg",
-      TechStack: ["HTML", "CSS", "JavaScript"],
+        "A project showcasing the utility-first CSS framework, Tailwind CSS, for building modern web interfaces.",
+      imageUrl: "/src/assets/project/tailwind.png",
+      TechStack: ["HTML", "Tailwind CSS", "JavaScript"],
       tags: ["Web", "Basic"],
-      demoUrl: "https://your-demo-link.com/sample-project",
-      repoUrl: "https://github.com/yourusername/sample-project",
+      demoUrl: "#",
+      repoUrl: "https://github.com/RumeshKumara/TailwindUsed-Websites",
     },
     {
       id: "dummy-3",
@@ -1707,7 +1730,7 @@ export default function FullWidthTabs() {
                     Projects
                   </span>
                 </h3>
-                <p className="max-w-2xl mx-auto mb-6 text-slate-400">
+                <p className="max-w-2xl mx-auto mb-6 text-slate-400 md:text-base">
                   A showcase of my creative work, technical expertise, and
                   learning journey through real-world projects.
                 </p>
@@ -1906,7 +1929,7 @@ export default function FullWidthTabs() {
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                d="M15 12a3  3 0 11-6 0 3 3 0 016 0z"
                               />
                               <path
                                 strokeLinecap="round"
