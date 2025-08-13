@@ -8,19 +8,29 @@ import {
   TextField,
   Button,
   InputAdornment,
-  Divider,
   CircularProgress,
   Fade,
   Grow,
   Slide,
 } from "@mui/material";
-import { Person, Email, Message, Send, Share } from "@mui/icons-material";
+import {
+  Person,
+  Email,
+  Message,
+  Send,
+  Share,
+  LocationOn,
+  AccessTime,
+} from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import SocialLinks from "../components/SocialLinks";
 import Komentar from "../components/Commentar";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
+// Toggle comments visibility
+const SHOW_COMMENTS = false;
 
 // Styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -201,8 +211,79 @@ const ContactPage = () => {
 
         {/* Main Content */}
         <Grid container spacing={4}>
+          {/* Left info panel */}
+          <Grid item xs={12} lg={5}>
+            <Grow in timeout={1100}>
+              <StyledPaper elevation={0}>
+                <Box mb={3}>
+                  <GradientTypography variant="h4" component="h2" gutterBottom>
+                    Let&apos;s connect
+                  </GradientTypography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "rgba(156, 163, 175, 1)" }}
+                  >
+                    I’m open to freelance work, collaborations, and full‑time
+                    roles. Drop a message or reach me directly.
+                  </Typography>
+                </Box>
+
+                <Box display="flex" flexDirection="column" gap={2.5}>
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <Email sx={{ color: "#6366f1" }} />
+                    <Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ color: "rgba(148,163,184,1)" }}
+                      >
+                        Email
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: "white" }}>
+                        rumeshk066@gmail.com
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <LocationOn sx={{ color: "#a855f7" }} />
+                    <Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ color: "rgba(148,163,184,1)" }}
+                      >
+                        Location
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: "white" }}>
+                        Sri Lanka
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <AccessTime sx={{ color: "#22d3ee" }} />
+                    <Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ color: "rgba(148,163,184,1)" }}
+                      >
+                        Response time
+                      </Typography>
+                      <Typography variant="body1" sx={{ color: "white" }}>
+                        Typically within 24 hours
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+
+                <Box mt={4}>
+                  <SocialLinks />
+                </Box>
+              </StyledPaper>
+            </Grow>
+          </Grid>
+
           {/* Contact Form */}
-          <Grid item xs={12} lg={6}>
+          <Grid item xs={12} lg={7}>
             <Grow in timeout={1200}>
               <StyledPaper elevation={0}>
                 <Box
@@ -328,27 +409,20 @@ const ContactPage = () => {
                     </GradientButton>
                   </Slide>
                 </Box>
-
-                <Box mt={4} pt={3}>
-                  <Divider
-                    sx={{ borderColor: "rgba(255, 255, 255, 0.1)", mb: 3 }}
-                  />
-                  <Box display="flex" justifyContent="center">
-                    <SocialLinks />
-                  </Box>
-                </Box>
               </StyledPaper>
             </Grow>
           </Grid>
 
           {/* Comments Section */}
-          <Grid item xs={12} lg={6}>
-            <Grow in timeout={1400}>
-              <StyledPaper elevation={0} sx={{ height: "fit-content" }}>
-                <Komentar />
-              </StyledPaper>
-            </Grow>
-          </Grid>
+          {SHOW_COMMENTS && (
+            <Grid item xs={12} lg={6}>
+              <Grow in timeout={1400}>
+                <StyledPaper elevation={0} sx={{ height: "fit-content" }}>
+                  <Komentar />
+                </StyledPaper>
+              </Grow>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </Box>

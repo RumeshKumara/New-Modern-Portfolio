@@ -213,8 +213,9 @@ const Home = () => {
                   data-aos="fade-up"
                   data-aos-delay="1000"
                 >
-                  Menciptakan Website Yang Inovatif, Fungsional, dan
-                  User-Friendly untuk Solusi Digital.
+                  I am a passionate full-stack developer & UI/UX designer,
+                  constantly seeking to learn and grow in the ever-evolving tech
+                  landscape.
                 </p>
 
                 {/* Tech Stack */}
