@@ -273,6 +273,32 @@ const ContactPage = () => {
                       </Typography>
                     </Box>
                   </Box>
+                  <Box display="flex" alignItems="center" gap={2}>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                      alt="WhatsApp"
+                      style={{ width: 24, height: 24, color: "#25D366" }}
+                    />
+                    <Box>
+                      <Typography
+                        variant="overline"
+                        sx={{ color: "rgba(148,163,184,1)" }}
+                      >
+                        WhatsApp
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ color: "white" }}
+                        // component="a"
+                        href="https://wa.me/94767239377"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: "none", color: "white" }}
+                      >
+                        076 723 9377
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Box>
 
                 <Box mt={4}>
